@@ -29,9 +29,10 @@
       background: var(--bg-card);
       color: var(--text);
       min-height: 100vh;
+      overflow: hidden;
     }
     
-    #app { display: flex; min-height: 100vh; }
+    #app { display: flex; height: 100vh; }
     
     /* ===== SIDEBAR ===== */
     .sidebar {
@@ -260,28 +261,38 @@
     .btn-outline { background: transparent; border: 1px solid var(--gold-dark); color: var(--gold); }
     .btn-outline:hover { background: var(--gold); color: #000; }
     
+    /* ===== MENU PAGE CONTAINER ===== */
     .preview-scroll {
       flex: 1;
-      overflow: auto;
-      padding: 20px;
+      overflow: hidden;
+      padding: 0;
       background: #1a1a1a;
+      position: relative;
     }
     
-    .menu-page-wrapper {
-      display: inline-block;
-      transform: scale(0.7);
-      transform-origin: top left;
-      margin-bottom: -300px;
+    .page-scaler {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+    }
+    
+    .page-inner {
+      position: relative;
+      width: 794px;
+      height: 1123px;
+      margin: 20px;
     }
     
     /* ===== MENU PAGE - EXACT REPLICA ===== */
     .menu-page {
-      width: 1169px;
-      height: 1653px;
+      width: 794px;
+      height: 1123px;
       background: #34383A;
       position: relative;
       overflow: hidden;
       display: flex;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.6);
     }
     
     /* Gold border at top */
@@ -303,8 +314,8 @@
       grid-template-columns: 1fr 1fr 1fr;
       gap: 0 15px;
       padding: 20px 15px 20px 20px;
-      height: 1653px;
-      margin-right: 220px;
+      height: 1123px;
+      margin-right: 160px;
       overflow: hidden;
     }
     
@@ -363,7 +374,7 @@
     
     /* ===== LOGO SIDEBAR ===== */
     .logo-sidebar {
-      width: 220px;
+      width: 160px;
       background: #34383A;
       display: flex;
       flex-direction: column;
@@ -447,110 +458,42 @@
     /* ===== PRINT ===== */
     @media print {
       @page {
-        size: A3;
+        size: A4;
         margin: 0 !important;
       }
-      html { 
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 1169px !important;
-        height: 1653px !important;
+      body {
         background: #34383A !important;
-      }
-      body { 
         margin: 0 !important;
         padding: 0 !important;
-        width: 1169px !important;
-        height: 1653px !important;
-        overflow: hidden !important;
-        background: #34383A !important;
-        position: relative !important;
+        width: 794px !important;
+        height: 1123px !important;
       }
-      body::before {
-        content: '' !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        background: #34383A !important;
-        z-index: -9999 !important;
-      }
-      .sidebar, .preview-toolbar, .sidebar-toggle { display: none !important; }
-      .preview-container { 
-        display: block !important; 
-        width: 1169px !important;
-        height: 1653px !important;
+      .sidebar, .preview-toolbar, .sidebar-toggle, .preview-scroll { display: none !important; }
+      .preview-container {
+        display: block !important;
+        width: 794px !important;
+        height: 1123px !important;
         overflow: hidden !important;
         background: #34383A !important;
         margin: 0 !important;
         padding: 0 !important;
-        position: relative !important;
       }
-      .preview-scroll { 
-        padding: 0 !important; 
-        overflow: hidden !important; 
-        background: #34383A !important;
-        display: block !important;
-        width: 1169px !important;
-        height: 1653px !important;
-        margin: 0 !important;
+      .page-scaler {
         position: relative !important;
-      }
-      .menu-page-wrapper { 
-        transform: none !important; 
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 1169px !important;
-        height: 1653px !important;
-        display: block !important;
-        page-break-after: avoid !important;
-        break-after: avoid !important;
-        background: #34383A !important;
-        position: relative !important;
-      }
-      .menu-page { 
-        box-shadow: none !important; 
-        margin: 0 !important;
-        width: 1169px !important;
-        height: 1653px !important;
         transform: none !important;
-        page-break-after: avoid !important;
-        page-break-inside: avoid !important;
-        break-after: avoid !important;
-        break-inside: avoid !important;
-        overflow: hidden !important;
-        background: #34383A !important;
-        position: relative !important;
       }
-      .menu-content {
-        height: 1653px !important;
-        padding: 0.3in 0.2in 0.3in 0.3in !important;
-        margin-right: 1.8in !important;
-        gap: 0 0.15in !important;
-        background: #34383A !important;
+      .page-inner {
+        margin: 0 !important;
       }
-      .logo-sidebar { 
-        background: #34383A !important;
-        width: 1.8in !important;
-        padding: 0.2in 0.1in !important;
+      .menu-page {
+        box-shadow: none !important;
+        margin: 0 !important;
+        width: 794px !important;
+        height: 1123px !important;
       }
-      .logo-sidebar img {
-        width: 100% !important;
-        max-height: 100% !important;
-        object-fit: contain !important;
-      }
-      .menu-item-name, .menu-item-price {
-        font-size: 9px !important;
-        line-height: 1.1 !important;
-      }
-      .menu-section-title {
-        font-size: 8px !important;
-        padding: 2px 8px !important;
-      }
-      * { 
-        -webkit-print-color-adjust: exact !important; 
-        print-color-adjust: exact !important; 
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
         color-adjust: exact !important;
       }
     }
@@ -619,60 +562,62 @@
         </div>
       </div>
       
-      <div class="preview-scroll">
-        <div class="menu-page-wrapper">
-          <div class="menu-page" :id="'menu-page-' + currentMenu">
-            <!-- Main Content -->
-            <div class="menu-content">
-              <!-- Left Column -->
-              <div class="menu-col">
-                <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
-                  <div class="menu-section" v-if="section.title && section.items.length">
-                    <div class="menu-section-title">{{ section.title }}</div>
-                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                      <div class="menu-item-line">
-                        <span class="menu-item-name">{{ item.name }}</span>
-                        <span class="menu-item-price">{{ item.price }}</span>
+      <div class="preview-scroll" ref="scrollContainer">
+        <div class="page-scaler" :style="{ transform: 'scale(' + pageScale + ')' }">
+          <div class="page-inner">
+            <div class="menu-page" :id="'menu-page-' + currentMenu">
+              <!-- Main Content -->
+              <div class="menu-content">
+                <!-- Left Column -->
+                <div class="menu-col">
+                  <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
+                    <div class="menu-section" v-if="section.title && section.items.length">
+                      <div class="menu-section-title">{{ section.title }}</div>
+                      <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                        <div class="menu-item-line">
+                          <span class="menu-item-name">{{ item.name }}</span>
+                          <span class="menu-item-price">{{ item.price }}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </template>
+                  </template>
+                </div>
+                
+                <!-- Middle Column -->
+                <div class="menu-col">
+                  <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
+                    <div class="menu-section" v-if="section.title && section.items.length">
+                      <div class="menu-section-title">{{ section.title }}</div>
+                      <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                        <div class="menu-item-line">
+                          <span class="menu-item-name">{{ item.name }}</span>
+                          <span class="menu-item-price">{{ item.price }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+                
+                <!-- Right Column (before logo) -->
+                <div class="menu-col">
+                  <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
+                    <div class="menu-section" v-if="section.title && section.items.length">
+                      <div class="menu-section-title">{{ section.title }}</div>
+                      <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                        <div class="menu-item-line">
+                          <span class="menu-item-name">{{ item.name }}</span>
+                          <span class="menu-item-price">{{ item.price }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                </div>
               </div>
               
-              <!-- Middle Column -->
-              <div class="menu-col">
-                <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
-                  <div class="menu-section" v-if="section.title && section.items.length">
-                    <div class="menu-section-title">{{ section.title }}</div>
-                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                      <div class="menu-item-line">
-                        <span class="menu-item-name">{{ item.name }}</span>
-                        <span class="menu-item-price">{{ item.price }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </template>
+              <!-- Logo Sidebar -->
+              <div class="logo-sidebar">
+                <img src="logo.svg" alt="TOTANGO RESTAURANT" />
               </div>
-              
-              <!-- Right Column (before logo) -->
-              <div class="menu-col">
-                <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
-                  <div class="menu-section" v-if="section.title && section.items.length">
-                    <div class="menu-section-title">{{ section.title }}</div>
-                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                      <div class="menu-item-line">
-                        <span class="menu-item-name">{{ item.name }}</span>
-                        <span class="menu-item-price">{{ item.price }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </template>
-              </div>
-            </div>
-            
-            <!-- Logo Sidebar -->
-            <div class="logo-sidebar">
-              <img src="logo.svg" alt="TOTANGO RESTAURANT" />
             </div>
           </div>
         </div>
@@ -717,7 +662,7 @@
   </div>
 
   <script>
-    const { createApp, ref, computed } = Vue;
+    const { createApp, ref, computed, onMounted, onBeforeUnmount } = Vue;
     
     createApp({
       setup() {
@@ -729,6 +674,29 @@
         const newItem = ref({ name: '', price: '', description: '' });
         const newSectionTitle = ref('');
         const newSectionColumn = ref('0');
+        const pageScale = ref(1);
+        const scrollContainer = ref(null);
+        
+        // Dynamic scaling to fit page in viewport
+        function updateScale() {
+          if (!scrollContainer.value) return;
+          const rect = scrollContainer.value.getBoundingClientRect();
+          const availW = rect.width - 40;  // 20px margin each side
+          const availH = rect.height - 40;
+          const pageW = 794 + 40;  // page + margins
+          const pageH = 1123 + 40;
+          const scale = Math.min(availW / pageW, availH / pageH);
+          pageScale.value = Math.min(scale, 1); // never scale up
+        }
+        
+        onMounted(() => {
+          updateScale();
+          window.addEventListener('resize', updateScale);
+        });
+        
+        onBeforeUnmount(() => {
+          window.removeEventListener('resize', updateScale);
+        });
         
         // Helper: build column layout from flat sections
         function buildColumns(sections) {
@@ -1129,7 +1097,7 @@
           }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a3');
+            const pdf = new jsPDF('p', 'mm', 'a4');
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
             
@@ -1163,7 +1131,7 @@
           menus: menusWithCols, currentMenu, sidebarHidden, showAddModal, showSectionModal,
           newItem, newSectionTitle, newSectionColumn,
           addItem, confirmAddItem, deleteItem, addSection, confirmAddSection,
-          printPDF, exportJSON
+          printPDF, exportJSON, pageScale, scrollContainer
         };
       }
     }).mount('#app');
