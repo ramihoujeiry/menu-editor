@@ -445,49 +445,80 @@
     /* ===== PRINT ===== */
     @media print {
       @page {
-        size: Letter;
-        margin: 0.25in;
+        size: Letter portrait;
+        margin: 0.2in;
       }
-      body { 
+      html, body { 
         background: #34383A !important; 
-        margin: 0;
-        padding: 0;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
       }
       .sidebar, .preview-toolbar, .sidebar-toggle { display: none !important; }
       .preview-container { 
         display: block !important; 
-        width: 100% !important;
-        height: 100% !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        overflow: hidden !important;
       }
       .preview-scroll { 
-        padding: 0; 
+        padding: 0 !important; 
         overflow: hidden !important; 
         background: #34383A !important;
-        display: block !important;
-        width: 100% !important;
-        height: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        width: 100vw !important;
+        height: 100vh !important;
       }
       .menu-page-wrapper { 
         transform: none !important; 
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
+        width: auto !important;
+        height: auto !important;
         display: block !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
       }
       .menu-page { 
-        box-shadow: none; 
-        margin: 0;
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 8in !important;
-        max-height: 10.5in !important;
-        transform: scale(0.75) !important;
-        transform-origin: top center !important;
+        box-shadow: none !important; 
+        margin: 0 !important;
+        width: 8in !important;
+        height: 10.5in !important;
+        transform: none !important;
         page-break-after: avoid !important;
         page-break-inside: avoid !important;
+        break-after: avoid !important;
+        break-inside: avoid !important;
+        overflow: hidden !important;
       }
-      .logo-sidebar { background: #34383A !important; }
+      .menu-content {
+        height: 10.5in !important;
+        padding: 0.3in 0.2in 0.3in 0.3in !important;
+        margin-right: 1.5in !important;
+        gap: 0 0.15in !important;
+      }
+      .logo-sidebar { 
+        background: #34383A !important;
+        width: 1.5in !important;
+        padding: 0.2in 0.1in !important;
+      }
+      .logo-sidebar img {
+        width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+      }
+      .menu-item-name, .menu-item-price {
+        font-size: 9px !important;
+        line-height: 1.1 !important;
+      }
+      .menu-section-title {
+        font-size: 8px !important;
+        padding: 2px 8px !important;
+      }
       * { 
         -webkit-print-color-adjust: exact !important; 
         print-color-adjust: exact !important; 
