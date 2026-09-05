@@ -269,15 +269,15 @@
     
     .menu-page-wrapper {
       display: inline-block;
-      transform: scale(0.8);
+      transform: scale(0.65);
       transform-origin: top left;
-      margin-bottom: -100px;
+      margin-bottom: -400px;
     }
     
     /* ===== MENU PAGE - EXACT REPLICA ===== */
     .menu-page {
-      width: 794px;
-      height: 1123px;
+      width: 1169px;
+      height: 1653px;
       background: #34383A;
       position: relative;
       overflow: hidden;
@@ -303,8 +303,8 @@
       grid-template-columns: 1fr 1fr 1fr;
       gap: 0 15px;
       padding: 20px 15px 20px 20px;
-      height: 1123px;
-      margin-right: 160px;
+      height: 1653px;
+      margin-right: 220px;
       overflow: hidden;
     }
     
@@ -363,7 +363,7 @@
     
     /* ===== LOGO SIDEBAR ===== */
     .logo-sidebar {
-      width: 200px;
+      width: 220px;
       background: #34383A;
       display: flex;
       flex-direction: column;
@@ -447,21 +447,21 @@
     /* ===== PRINT ===== */
     @media print {
       @page {
-        size: A4;
+        size: A3;
         margin: 0 !important;
       }
       html { 
         margin: 0 !important;
         padding: 0 !important;
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1169px !important;
+        height: 1653px !important;
         background: #34383A !important;
       }
       body { 
         margin: 0 !important;
         padding: 0 !important;
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1169px !important;
+        height: 1653px !important;
         overflow: hidden !important;
         background: #34383A !important;
         position: relative !important;
@@ -479,8 +479,8 @@
       .sidebar, .preview-toolbar, .sidebar-toggle { display: none !important; }
       .preview-container { 
         display: block !important; 
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1169px !important;
+        height: 1653px !important;
         overflow: hidden !important;
         background: #34383A !important;
         margin: 0 !important;
@@ -492,8 +492,8 @@
         overflow: hidden !important; 
         background: #34383A !important;
         display: block !important;
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1169px !important;
+        height: 1653px !important;
         margin: 0 !important;
         position: relative !important;
       }
@@ -501,8 +501,8 @@
         transform: none !important; 
         margin: 0 !important;
         padding: 0 !important;
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1169px !important;
+        height: 1653px !important;
         display: block !important;
         page-break-after: avoid !important;
         break-after: avoid !important;
@@ -512,8 +512,8 @@
       .menu-page { 
         box-shadow: none !important; 
         margin: 0 !important;
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1169px !important;
+        height: 1653px !important;
         transform: none !important;
         page-break-after: avoid !important;
         page-break-inside: avoid !important;
@@ -524,7 +524,7 @@
         position: relative !important;
       }
       .menu-content {
-        height: 1123px !important;
+        height: 1653px !important;
         padding: 0.3in 0.2in 0.3in 0.3in !important;
         margin-right: 1.8in !important;
         gap: 0 0.15in !important;
@@ -672,7 +672,7 @@
             
             <!-- Logo Sidebar -->
             <div class="logo-sidebar">
-              <img src="logo.png" alt="TOTANGO RESTAURANT" />
+              <img src="logo.svg" alt="TOTANGO RESTAURANT" />
             </div>
           </div>
         </div>
@@ -1129,7 +1129,7 @@
           }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdf = new jsPDF('p', 'mm', 'a3');
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
             
