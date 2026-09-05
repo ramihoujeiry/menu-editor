@@ -444,14 +444,54 @@
     
     /* ===== PRINT ===== */
     @media print {
-      body { background: #34383A !important; }
+      @page {
+        size: Letter;
+        margin: 0.25in;
+      }
+      body { 
+        background: #34383A !important; 
+        margin: 0;
+        padding: 0;
+      }
       .sidebar, .preview-toolbar, .sidebar-toggle { display: none !important; }
-      .preview-container { display: block !important; }
-      .preview-scroll { padding: 0; overflow: visible; background: #34383A !important; }
-      .menu-page { box-shadow: none; margin: 0; }
-      .menu-page-wrapper { transform: none; margin: 0; }
+      .preview-container { 
+        display: block !important; 
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .preview-scroll { 
+        padding: 0; 
+        overflow: hidden !important; 
+        background: #34383A !important;
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .menu-page-wrapper { 
+        transform: none !important; 
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+      }
+      .menu-page { 
+        box-shadow: none; 
+        margin: 0;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 8in !important;
+        max-height: 10.5in !important;
+        transform: scale(0.75) !important;
+        transform-origin: top center !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+      }
       .logo-sidebar { background: #34383A !important; }
-      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      * { 
+        -webkit-print-color-adjust: exact !important; 
+        print-color-adjust: exact !important; 
+      }
     }
     
     ::-webkit-scrollbar { width: 6px; }
