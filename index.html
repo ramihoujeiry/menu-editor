@@ -42,7 +42,32 @@
       flex-direction: column;
       overflow: hidden;
       flex-shrink: 0;
+      transition: width 0.3s, margin-left 0.3s;
     }
+    
+    .sidebar.hidden {
+      width: 0;
+      margin-left: -340px;
+      border-right: none;
+    }
+    
+    .sidebar-toggle {
+      position: fixed;
+      left: 10px;
+      top: 10px;
+      z-index: 100;
+      background: var(--gold);
+      color: #1a1a1a;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: left 0.3s;
+    }
+    
+    .sidebar-toggle:hover { background: var(--gold-light); }
     
     .sidebar-header {
       padding: 20px 20px 14px;
@@ -256,9 +281,10 @@
       z-index: 1;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 0 30px;
-      padding: 35px 40px 35px 40px;
+      gap: 0 25px;
+      padding: 30px 30px 30px 35px;
       min-height: 822.05px;
+      padding-right: 200px; /* Leave room for logo */
     }
     
     /* ===== SECTION HEADERS (yellow pill style) ===== */
@@ -317,10 +343,11 @@
     /* ===== LOGO AREA ===== */
     .logo-area {
       position: absolute;
-      right: 40px;
-      top: 50px;
+      right: 25px;
+      top: 40px;
       text-align: center;
       z-index: 2;
+      width: 160px;
     }
     
     .logo-crown {
@@ -498,8 +525,13 @@
 </head>
 <body>
   <div id="app">
+    <!-- SIDEBAR TOGGLE -->
+    <button class="sidebar-toggle" @click="sidebarHidden = !sidebarHidden">
+      {{ sidebarHidden ? '☰' : '✕' }}
+    </button>
+    
     <!-- SIDEBAR EDITOR -->
-    <div class="sidebar">
+    <div class="sidebar" :class="{ hidden: sidebarHidden }">
       <div class="sidebar-header">
         <h1>TOTANGO RESTAURANT</h1>
         <p>Menu Editor — Tel: 068341668 / 050643131</p>
@@ -554,10 +586,19 @@
           <!-- Logo Area -->
           <div class="logo-area">
             <div class="logo-crown">
-              <svg viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 25 L10 10 L15 18 L20 5 L25 18 L30 10 L35 25 Z" fill="#e6b832" stroke="#e6b832" stroke-width="1.5"/>
-                <rect x="5" y="25" width="30" height="4" fill="#e6b832"/>
-                <text x="20" y="20" text-anchor="middle" fill="#000" font-size="10" font-weight="bold" font-family="serif">T</text>
+              <svg viewBox="0 0 60 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Crown base -->
+                <rect x="8" y="32" width="44" height="8" rx="2" fill="#e6b832"/>
+                <!-- Crown points -->
+                <path d="M8 32 L14 12 L20 24 L26 8 L32 24 L38 12 L44 32 Z" fill="#e6b832" stroke="#d4a832" stroke-width="1"/>
+                <!-- Gems on crown points -->
+                <circle cx="14" cy="12" r="3" fill="#d4a832"/>
+                <circle cx="20" cy="24" r="2.5" fill="#d4a832"/>
+                <circle cx="26" cy="8" r="3.5" fill="#d4a832"/>
+                <circle cx="32" cy="24" r="2.5" fill="#d4a832"/>
+                <circle cx="38" cy="12" r="3" fill="#d4a832"/>
+                <!-- T letter in center -->
+                <text x="30" y="27" text-anchor="middle" fill="#000" font-size="12" font-weight="bold" font-family="serif">T</text>
               </svg>
             </div>
             <div class="logo-menu-circle">
@@ -570,11 +611,10 @@
             </div>
             <div class="logo-restaurant">TOTANGO</div>
             <div class="logo-restaurant-sub">RESTAURANT</div>
-            <div class="logo-phone">Tel : 06 834 16 68<br/>05 064 31 31</div>
+            <div class="logo-phone">Tel : 06 834 16 68 / 05 064 31 31</div>
             <div class="reservation-box">
               <strong>RÉSERVATION ANNIVERSAIRE</strong>
-              500 FCFA / personne<br/>
-              du lundi au vendredi
+              500 FCFA / personne — du lundi au vendredi
             </div>
           </div>
           
@@ -675,6 +715,7 @@
     createApp({
       setup() {
         const currentMenu = ref(0);
+        const sidebarHidden = ref(false);
         const showAddModal = ref(false);
         const showSectionModal = ref(false);
         const addItemTarget = ref({ col: 0, sec: 0 });
@@ -1081,7 +1122,7 @@
         }
         
         return {
-          menus: menusWithCols, currentMenu, showAddModal, showSectionModal,
+          menus: menusWithCols, currentMenu, sidebarHidden, showAddModal, showSectionModal,
           newItem, newSectionTitle, newSectionColumn,
           addItem, confirmAddItem, deleteItem, addSection, confirmAddSection,
           printPDF, exportJSON
