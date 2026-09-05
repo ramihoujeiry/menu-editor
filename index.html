@@ -262,29 +262,24 @@
       flex: 1;
       overflow: auto;
       padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
       background: #1a1a1a;
     }
     
     .menu-page-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 20px;
+      display: inline-block;
+      transform: scale(0.75);
+      transform-origin: top left;
+      margin-bottom: -200px;
     }
     
+    /* ===== MENU PAGE - EXACT REPLICA ===== */
     .menu-page {
       width: 980.79px;
       height: 822.05px;
       background: #34383A;
       position: relative;
       overflow: hidden;
-      flex-shrink: 0;
       display: flex;
-      transform: scale(0.7);
-      transform-origin: top center;
     }
     
     /* Gold border at top */
@@ -523,57 +518,58 @@
       <div class="preview-scroll">
         <div class="menu-page-wrapper">
           <div class="menu-page" :id="'menu-page-' + currentMenu">
-          <!-- Main Content -->
-          <div class="menu-content">
-            <!-- Left Column -->
-            <div class="menu-col">
-              <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
-                <div class="menu-section" v-if="section.title && section.items.length">
-                  <div class="menu-section-title">{{ section.title }}</div>
-                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                    <div class="menu-item-line">
-                      <span class="menu-item-name">{{ item.name }}</span>
-                      <span class="menu-item-price">{{ item.price }}</span>
+            <!-- Main Content -->
+            <div class="menu-content">
+              <!-- Left Column -->
+              <div class="menu-col">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
+                  <div class="menu-section" v-if="section.title && section.items.length">
+                    <div class="menu-section-title">{{ section.title }}</div>
+                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                      <div class="menu-item-line">
+                        <span class="menu-item-name">{{ item.name }}</span>
+                        <span class="menu-item-price">{{ item.price }}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </template>
+                </template>
+              </div>
+              
+              <!-- Middle Column -->
+              <div class="menu-col">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
+                  <div class="menu-section" v-if="section.title && section.items.length">
+                    <div class="menu-section-title">{{ section.title }}</div>
+                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                      <div class="menu-item-line">
+                        <span class="menu-item-name">{{ item.name }}</span>
+                        <span class="menu-item-price">{{ item.price }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+              
+              <!-- Right Column (before logo) -->
+              <div class="menu-col">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
+                  <div class="menu-section" v-if="section.title && section.items.length">
+                    <div class="menu-section-title">{{ section.title }}</div>
+                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                      <div class="menu-item-line">
+                        <span class="menu-item-name">{{ item.name }}</span>
+                        <span class="menu-item-price">{{ item.price }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
             </div>
             
-            <!-- Middle Column -->
-            <div class="menu-col">
-              <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
-                <div class="menu-section" v-if="section.title && section.items.length">
-                  <div class="menu-section-title">{{ section.title }}</div>
-                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                    <div class="menu-item-line">
-                      <span class="menu-item-name">{{ item.name }}</span>
-                      <span class="menu-item-price">{{ item.price }}</span>
-                    </div>
-                  </div>
-                </div>
-              </template>
+            <!-- Logo Sidebar -->
+            <div class="logo-sidebar">
+              <img src="logo.png" alt="TOTANGO RESTAURANT" />
             </div>
-            
-            <!-- Right Column (before logo) -->
-            <div class="menu-col">
-              <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
-                <div class="menu-section" v-if="section.title && section.items.length">
-                  <div class="menu-section-title">{{ section.title }}</div>
-                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                    <div class="menu-item-line">
-                      <span class="menu-item-name">{{ item.name }}</span>
-                      <span class="menu-item-price">{{ item.price }}</span>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </div>
-          
-          <!-- Logo Sidebar -->
-          <div class="logo-sidebar">
-            <img src="logo.png" alt="TOTANGO RESTAURANT" style="width: 100%; max-width: 160px; height: auto; display: block;" />
           </div>
         </div>
       </div>
