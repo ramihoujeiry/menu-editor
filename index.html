@@ -444,11 +444,14 @@
     
     /* ===== PRINT ===== */
     @media print {
-      body { background: white; }
+      body { background: #34383A !important; }
       .sidebar, .preview-toolbar, .sidebar-toggle { display: none !important; }
       .preview-container { display: block !important; }
-      .preview-scroll { padding: 0; overflow: visible; }
+      .preview-scroll { padding: 0; overflow: visible; background: #34383A !important; }
       .menu-page { box-shadow: none; margin: 0; }
+      .menu-page-wrapper { transform: none; margin: 0; }
+      .logo-sidebar { background: #34383A !important; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     }
     
     ::-webkit-scrollbar { width: 6px; }
