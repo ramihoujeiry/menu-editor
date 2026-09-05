@@ -260,15 +260,22 @@
     
     .preview-scroll {
       flex: 1;
-      overflow: auto;
+      overflow: hidden;
       padding: 20px;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       background: #1a1a1a;
     }
     
-    /* ===== MENU PAGE - EXACT REPLICA ===== */
+    .menu-page-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+    
     .menu-page {
       width: 980.79px;
       height: 822.05px;
@@ -277,6 +284,8 @@
       overflow: hidden;
       flex-shrink: 0;
       display: flex;
+      transform: scale(0.75);
+      transform-origin: center center;
     }
     
     /* Gold border at top */
@@ -513,7 +522,8 @@
       </div>
       
       <div class="preview-scroll">
-        <div class="menu-page" :id="'menu-page-' + currentMenu">
+        <div class="menu-page-wrapper">
+          <div class="menu-page" :id="'menu-page-' + currentMenu">
           <!-- Main Content -->
           <div class="menu-content">
             <!-- Left Column -->
