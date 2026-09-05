@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FOUR TOUT / TOTANGO - Menu Editor</title>
+  <title>TOTANGO RESTAURANT - Menu Editor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,20 +31,21 @@
       min-height: 100vh;
     }
     
-    /* ===== APP LAYOUT ===== */
     #app { display: flex; min-height: 100vh; }
     
+    /* ===== SIDEBAR ===== */
     .sidebar {
-      width: 320px;
+      width: 340px;
       background: var(--bg-card);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      flex-shrink: 0;
     }
     
     .sidebar-header {
-      padding: 24px 20px 16px;
+      padding: 20px 20px 14px;
       border-bottom: 1px solid var(--border);
     }
     
@@ -56,23 +57,24 @@
     }
     
     .sidebar-header p {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-dim);
-      margin-top: 4px;
+      margin-top: 2px;
     }
     
     .menu-tabs {
       display: flex;
       gap: 4px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-bottom: 1px solid var(--border);
       overflow-x: auto;
+      flex-wrap: wrap;
     }
     
     .menu-tab {
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
@@ -88,47 +90,45 @@
     .editor-area {
       flex: 1;
       overflow-y: auto;
-      padding: 16px;
+      padding: 12px;
     }
     
     .section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 20px 0 10px;
-    }
-    
-    .section-header h3 {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--gold);
-      font-weight: 600;
+      margin: 14px 0 6px;
     }
     
     .section-header:first-child { margin-top: 0; }
+    
+    .section-header h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-weight: 600;
+    }
     
     .add-item-btn {
       background: transparent;
       border: 1px dashed var(--gold-dark);
       color: var(--gold);
-      padding: 6px 14px;
+      padding: 4px 10px;
       border-radius: 5px;
-      font-size: 12px;
+      font-size: 11px;
       cursor: pointer;
       transition: all 0.2s;
     }
     
     .add-item-btn:hover { background: var(--gold); color: #1a1a1a; border-style: solid; }
     
-    /* ===== ITEM CARD ===== */
     .item-card {
       background: var(--bg-input);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 8px;
-      position: relative;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
       transition: all 0.2s;
     }
     
@@ -136,7 +136,7 @@
     
     .item-card .row {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
     }
     
@@ -144,9 +144,9 @@
       background: var(--bg-dark);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 10px;
-      border-radius: 5px;
-      font-size: 13px;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 12px;
       font-family: inherit;
       width: 100%;
       transition: border-color 0.2s;
@@ -157,20 +157,14 @@
       border-color: var(--gold);
     }
     
-    .item-card input.item-name { font-weight: 500; }
+    .item-card input.item-price { width: 70px; text-align: center; font-weight: 600; color: var(--gold); }
+    
     .item-card textarea.item-desc {
       resize: vertical;
-      min-height: 32px;
-      font-size: 11px;
+      min-height: 28px;
+      font-size: 10px;
       color: var(--text-dim);
-      margin-top: 6px;
-    }
-    
-    .item-card input.item-price {
-      width: 90px;
-      text-align: center;
-      font-weight: 600;
-      color: var(--gold);
+      margin-top: 4px;
     }
     
     .delete-btn {
@@ -178,8 +172,8 @@
       border: none;
       color: var(--text-dim);
       cursor: pointer;
-      font-size: 16px;
-      padding: 4px 8px;
+      font-size: 14px;
+      padding: 2px 6px;
       border-radius: 4px;
       transition: all 0.2s;
       flex-shrink: 0;
@@ -187,7 +181,7 @@
     
     .delete-btn:hover { color: var(--danger); background: rgba(231,76,60,0.1); }
     
-    /* ===== PREVIEW AREA ===== */
+    /* ===== PREVIEW ===== */
     .preview-container {
       flex: 1;
       display: flex;
@@ -196,7 +190,7 @@
     }
     
     .preview-toolbar {
-      padding: 16px 24px;
+      padding: 14px 20px;
       background: var(--bg-card);
       border-bottom: 1px solid var(--border);
       display: flex;
@@ -205,7 +199,7 @@
     }
     
     .preview-toolbar h2 {
-      font-size: 16px;
+      font-size: 15px;
       color: var(--gold);
       font-family: 'Playfair Display', serif;
     }
@@ -213,9 +207,9 @@
     .toolbar-actions { display: flex; gap: 8px; }
     
     .btn {
-      padding: 8px 18px;
+      padding: 7px 16px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       cursor: pointer;
       border: none;
@@ -224,143 +218,193 @@
     
     .btn-gold { background: var(--gold); color: #1a1a1a; }
     .btn-gold:hover { background: var(--gold-light); }
-    
     .btn-outline { background: transparent; border: 1px solid var(--gold-dark); color: var(--gold); }
     .btn-outline:hover { background: var(--gold); color: #1a1a1a; }
     
     .preview-scroll {
       flex: 1;
-      overflow-y: auto;
-      padding: 40px;
+      overflow: auto;
+      padding: 30px;
       display: flex;
       justify-content: center;
       align-items: flex-start;
     }
     
-    /* ===== MENU PREVIEW (matches PDF theme) ===== */
+    /* ===== MENU PAGE (matches original PDF exactly) ===== */
     .menu-page {
-      width: 794px;
-      min-height: 1123px;
-      background: #2c2e30;
-      padding: 50px 60px;
+      width: 980.79px;
+      min-height: 822.05px;
+      background: #1c1c1c;
       position: relative;
-      font-family: 'Inter', Calibri, sans-serif;
-      color: #fff;
-      page-break-after: always;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      overflow: hidden;
+      flex-shrink: 0;
     }
     
+    /* Botanical leaf pattern overlay */
     .menu-page::before {
       content: '';
       position: absolute;
-      top: 20px; left: 20px; right: 20px; bottom: 20px;
-      border: 2px solid var(--gold);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M30,10 Q50,5 70,15 T100,10 M120,25 Q140,15 160,30 T180,25 M20,50 Q40,40 60,55 T90,50 M130,60 Q150,50 170,65 T190,60 M40,90 Q60,80 80,95 T110,90 M140,100 Q160,90 180,105 T200,100 M10,130 Q30,120 50,135 T80,130 M120,140 Q140,130 160,145 T180,140 M30,170 Q50,160 70,175 T100,170 M130,180 Q150,170 170,185 T190,180 M20,20 Q35,25 30,40 T20,50 Q10,40 20,20 M150,70 Q165,75 160,90 T150,100 Q140,90 150,70 M50,120 Q65,125 60,140 T50,150 Q40,140 50,120 M100,160 Q115,165 110,180 T100,190 Q90,180 100,160' fill='none' stroke='%232a2a2a' stroke-width='1' opacity='0.4'/%3E%3Cpath d='M10,30 Q25,20 40,35 T60,30 M80,50 Q95,40 110,55 T130,50 M150,80 Q165,70 180,85 T200,80 M20,110 Q35,100 50,115 T70,110 M90,140 Q105,130 120,145 T140,140 M160,170 Q175,160 190,175 T200,170 M40,180 Q55,170 70,185 T90,180' fill='none' stroke='%23282828' stroke-width='0.8' opacity='0.3'/%3E%3Ccircle cx='30' cy='40' r='8' fill='none' stroke='%23262626' stroke-width='0.8' opacity='0.3'/%3E%3Ccircle cx='150' cy='120' r='12' fill='none' stroke='%23262626' stroke-width='0.8' opacity='0.3'/%3E%3Ccircle cx='80' cy='170' r='6' fill='none' stroke='%23262626' stroke-width='0.8' opacity='0.3'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
       pointer-events: none;
-      opacity: 0.6;
+      z-index: 0;
     }
     
-    .menu-page::after {
-      content: '';
-      position: absolute;
-      top: 26px; left: 26px; right: 26px; bottom: 26px;
-      border: 1px solid var(--gold);
-      pointer-events: none;
-      opacity: 0.3;
-    }
-    
-    .restaurant-name {
-      text-align: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 42px;
-      font-weight: 900;
-      letter-spacing: 6px;
-      color: var(--gold);
-      margin-bottom: 6px;
-    }
-    
-    .restaurant-sub {
-      text-align: center;
-      font-size: 13px;
-      letter-spacing: 3px;
-      color: var(--text-dim);
-      margin-bottom: 30px;
-      text-transform: uppercase;
-    }
-    
-    .menu-columns {
+    .menu-content {
+      position: relative;
+      z-index: 1;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px 50px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0 30px;
+      padding: 35px 40px 35px 40px;
+      min-height: 822.05px;
     }
     
+    /* ===== SECTION HEADERS (yellow pill style) ===== */
     .menu-section {
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
     
     .menu-section-title {
-      font-size: 14px;
+      display: inline-block;
+      background: #e6b832;
+      color: #000;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: var(--gold);
-      border-bottom: 1px solid var(--gold-dark);
-      padding-bottom: 4px;
-      margin-bottom: 10px;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+      font-family: 'Inter', sans-serif;
     }
     
+    /* ===== MENU ITEMS ===== */
     .menu-item {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      padding: 4px 0;
-      gap: 8px;
+      padding: 2px 0;
+      gap: 6px;
     }
     
     .menu-item-name {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 400;
       flex: 1;
+      color: #fff;
+      line-height: 1.4;
+      font-family: 'Inter', sans-serif;
     }
     
     .menu-item-desc {
-      font-size: 10px;
-      color: var(--text-dim);
+      font-size: 9px;
+      color: #888;
       display: block;
+      font-style: italic;
       margin-top: -2px;
-      margin-bottom: 4px;
-    }
-    
-    .menu-item-dots {
-      flex: 1;
-      border-bottom: 1px dotted #555;
-      margin: 0 6px;
-      min-width: 20px;
-      align-self: flex-end;
-      margin-bottom: 3px;
     }
     
     .menu-item-price {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--gold);
-      white-space: nowrap;
-    }
-    
-    .menu-footer {
-      text-align: center;
-      margin-top: 30px;
-      padding-top: 16px;
-      border-top: 1px solid #444;
       font-size: 11px;
-      color: var(--text-dim);
-      letter-spacing: 1px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      align-self: flex-start;
     }
     
-    .footer-info {
+    /* ===== LOGO AREA ===== */
+    .logo-area {
+      position: absolute;
+      right: 40px;
+      top: 50px;
       text-align: center;
+      z-index: 2;
+    }
+    
+    .logo-crown {
+      width: 40px;
+      height: 30px;
+      margin: 0 auto 8px;
+    }
+    
+    .logo-crown svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .logo-menu-circle {
+      width: 120px;
+      height: 120px;
+      background: #e6b832;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin: 0 auto 12px;
+    }
+    
+    .logo-menu-text {
+      font-size: 28px;
+      font-weight: 900;
+      color: #000;
+      letter-spacing: 3px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1;
+    }
+    
+    .logo-dots {
+      display: flex;
+      gap: 5px;
+      margin-top: 4px;
+    }
+    
+    .logo-dot {
+      width: 5px;
+      height: 5px;
+      background: #000;
+      border-radius: 50%;
+    }
+    
+    .logo-restaurant {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: #e6b832;
+      letter-spacing: 2px;
+      margin-bottom: 2px;
+    }
+    
+    .logo-restaurant-sub {
+      font-size: 11px;
+      color: #ccc;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    
+    .logo-phone {
+      font-size: 12px;
+      color: #ddd;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    
+    .reservation-box {
+      border: 1px solid #555;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 9px;
+      color: #bbb;
+      line-height: 1.5;
+      text-align: center;
+    }
+    
+    .reservation-box strong {
+      display: block;
+      color: #e6b832;
       font-size: 10px;
-      color: var(--text-dim);
-      margin-top: 12px;
+      margin-bottom: 2px;
     }
     
     /* ===== MODAL ===== */
@@ -379,7 +423,7 @@
       border: 1px solid var(--gold-dark);
       border-radius: 12px;
       padding: 28px;
-      width: 400px;
+      width: 380px;
       max-width: 90vw;
     }
     
@@ -387,11 +431,12 @@
       color: var(--gold);
       margin-bottom: 16px;
       font-family: 'Playfair Display', serif;
+      font-size: 18px;
     }
     
     .modal label {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-dim);
       margin-bottom: 4px;
       margin-top: 12px;
@@ -399,12 +444,12 @@
     
     .modal input, .modal select {
       width: 100%;
-      padding: 10px 12px;
+      padding: 8px 12px;
       background: var(--bg-input);
       border: 1px solid var(--border);
       color: var(--text);
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 13px;
       font-family: inherit;
     }
     
@@ -420,7 +465,7 @@
       margin-top: 20px;
     }
     
-    /* ===== PRINT STYLES ===== */
+    /* ===== PRINT ===== */
     @media print {
       body { background: white; }
       .sidebar, .preview-toolbar { display: none !important; }
@@ -429,36 +474,26 @@
       .menu-page { box-shadow: none; margin: 0; }
     }
     
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-dark); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
     
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--text-dim);
+    .add-section-btn {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      background: transparent;
+      border: 1px dashed var(--gold-dark);
+      color: var(--gold);
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: all 0.2s;
     }
     
-    .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-    
-    .badge {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 3px;
-      font-weight: 600;
-    }
-    
-    .badge-new { background: var(--success); color: #fff; }
-    
-    .toggle-add-section {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    
-    .toggle-add-section input { flex: 1; }
+    .add-section-btn:hover { background: var(--gold); color: #1a1a1a; }
   </style>
 </head>
 <body>
@@ -466,7 +501,7 @@
     <!-- SIDEBAR EDITOR -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h1>FOUR TOUT</h1>
+        <h1>TOTANGO RESTAURANT</h1>
         <p>Menu Editor — Tel: 068341668 / 050643131</p>
       </div>
       
@@ -492,34 +527,15 @@
             class="item-card"
           >
             <div class="row">
-              <input 
-                class="item-name" 
-                v-model="item.name" 
-                placeholder="Item name"
-              />
-              <input 
-                class="item-price" 
-                v-model="item.price" 
-                placeholder="0"
-              />
+              <input class="item-name" v-model="item.name" placeholder="Item name"/>
+              <input class="item-price" v-model="item.price" placeholder="0"/>
               <button class="delete-btn" @click="deleteItem(sIdx, iIdx)" title="Delete">×</button>
             </div>
-            <textarea 
-              class="item-desc" 
-              v-model="item.description" 
-              placeholder="Description (optional)"
-              rows="1"
-            ></textarea>
-          </div>
-          
-          <div v-if="section.items.length === 0" style="text-align:center; padding:20px; color:var(--text-dim); font-size:13px;">
-            No items yet. Click "+ Item" to add.
+            <textarea class="item-desc" v-model="item.description" placeholder="Description (optional)" rows="1"></textarea>
           </div>
         </div>
         
-        <div style="margin-top: 24px;">
-          <button class="add-item-btn" style="width:100%; padding:10px;" @click="addSection()">+ Add Section</button>
-        </div>
+        <button class="add-section-btn" @click="addSection()">+ Add Section</button>
       </div>
     </div>
     
@@ -534,45 +550,83 @@
       </div>
       
       <div class="preview-scroll">
-        <div>
-          <!-- Pages before current (if multi-page) -->
-          <div v-for="(menu, mIdx) in menus" :key="mIdx">
-            <div class="menu-page" :id="'menu-page-' + mIdx">
-              <div class="restaurant-name">{{ restaurantName }}</div>
-              <div class="restaurant-sub">{{ menu.subtitle }}</div>
-              
-              <div class="menu-columns">
-                <div 
-                  v-for="(section, sIdx) in menu.sections" 
-                  :key="sIdx" 
-                  class="menu-section"
-                  :style="shouldSplit(menu.sections, sIdx) ? 'grid-column: 1 / -1;' : ''"
-                >
+        <div class="menu-page" :id="'menu-page-' + currentMenu">
+          <!-- Logo Area -->
+          <div class="logo-area">
+            <div class="logo-crown">
+              <svg viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 25 L10 10 L15 18 L20 5 L25 18 L30 10 L35 25 Z" fill="#e6b832" stroke="#e6b832" stroke-width="1.5"/>
+                <rect x="5" y="25" width="30" height="4" fill="#e6b832"/>
+                <text x="20" y="20" text-anchor="middle" fill="#000" font-size="10" font-weight="bold" font-family="serif">T</text>
+              </svg>
+            </div>
+            <div class="logo-menu-circle">
+              <span class="logo-menu-text">MENU</span>
+              <div class="logo-dots">
+                <span class="logo-dot"></span>
+                <span class="logo-dot"></span>
+                <span class="logo-dot"></span>
+              </div>
+            </div>
+            <div class="logo-restaurant">TOTANGO</div>
+            <div class="logo-restaurant-sub">RESTAURANT</div>
+            <div class="logo-phone">Tel : 06 834 16 68<br/>05 064 31 31</div>
+            <div class="reservation-box">
+              <strong>RÉSERVATION ANNIVERSAIRE</strong>
+              500 FCFA / personne<br/>
+              du lundi au vendredi
+            </div>
+          </div>
+          
+          <!-- Menu Content -->
+          <div class="menu-content">
+            <!-- Left Column -->
+            <div class="menu-col">
+              <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
+                <div class="menu-section" v-if="section.title && section.items.length">
                   <div class="menu-section-title">{{ section.title }}</div>
-                  <div 
-                    v-for="(item, iIdx) in section.items" 
-                    :key="iIdx" 
-                    class="menu-item"
-                  >
+                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
                     <span class="menu-item-name">
                       {{ item.name }}
                       <span v-if="item.description" class="menu-item-desc">{{ item.description }}</span>
                     </span>
-                    <span class="menu-item-dots"></span>
-                    <span class="menu-item-price">{{ item.price }} {{ currency }}</span>
+                    <span class="menu-item-price">{{ item.price }}</span>
                   </div>
                 </div>
-              </div>
-              
-              <div class="menu-footer">
-                {{ footerText }}
-              </div>
-              <div class="footer-info">
-                Tel: 068341668 / 050643131 • {{ restaurantName }}
-              </div>
+              </template>
             </div>
             
-            <div style="height: 40px;"></div>
+            <!-- Middle Column -->
+            <div class="menu-col">
+              <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
+                <div class="menu-section" v-if="section.title && section.items.length">
+                  <div class="menu-section-title">{{ section.title }}</div>
+                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                    <span class="menu-item-name">
+                      {{ item.name }}
+                      <span v-if="item.description" class="menu-item-desc">{{ item.description }}</span>
+                    </span>
+                    <span class="menu-item-price">{{ item.price }}</span>
+                  </div>
+                </div>
+              </template>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="menu-col">
+              <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
+                <div class="menu-section" v-if="section.title && section.items.length">
+                  <div class="menu-section-title">{{ section.title }}</div>
+                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                    <span class="menu-item-name">
+                      {{ item.name }}
+                      <span v-if="item.description" class="menu-item-desc">{{ item.description }}</span>
+                    </span>
+                    <span class="menu-item-price">{{ item.price }}</span>
+                  </div>
+                </div>
+              </template>
+            </div>
           </div>
         </div>
       </div>
@@ -601,6 +655,12 @@
         <h3>Add New Section</h3>
         <label>Section Title</label>
         <input v-model="newSectionTitle" placeholder="e.g. DESSERTS" @keyup.enter="confirmAddSection"/>
+        <label>Column</label>
+        <select v-model="newSectionColumn">
+          <option value="0">Left</option>
+          <option value="1">Middle</option>
+          <option value="2">Right</option>
+        </select>
         <div class="modal-actions">
           <button class="btn btn-outline" @click="showSectionModal = false">Cancel</button>
           <button class="btn btn-gold" @click="confirmAddSection">Add Section</button>
@@ -610,25 +670,33 @@
   </div>
 
   <script>
-    const { createApp, ref, computed } = Vue;
+    const { createApp, ref, computed, watch } = Vue;
     
     createApp({
       setup() {
         const currentMenu = ref(0);
         const showAddModal = ref(false);
         const showSectionModal = ref(false);
-        const addItemTarget = ref(0);
+        const addItemTarget = ref({ col: 0, sec: 0 });
         const newItem = ref({ name: '', price: '', description: '' });
         const newSectionTitle = ref('');
-        const restaurantName = ref('FOUR TOUT');
-        const currency = ref('FCFA');
-        const footerText = ref('RÉSERVATION ANNIVERSAIRE — 500 FCFA / personne — du lundi au vendredi');
+        const newSectionColumn = ref('0');
         
-        // Full menu data from OCR
+        // Helper: build column layout from flat sections
+        function buildColumns(sections) {
+          const cols = [[], [], []];
+          // Distribute sections across columns (roughly evenly)
+          const perCol = Math.ceil(sections.length / 3);
+          sections.forEach((sec, i) => {
+            const colIdx = Math.min(Math.floor(i / perCol), 2);
+            cols[colIdx].push(sec);
+          });
+          return cols;
+        }
+        
         const menus = ref([
           {
             name: 'FOOD I',
-            subtitle: 'Menu',
             sections: [
               { title: 'OMELETTES', items: [
                 { name: 'OMELETTE NATURE', price: '2.500', description: '' },
@@ -645,17 +713,16 @@
                 { name: 'SALADE DE CRUDITÉ', price: '3.500', description: 'Laitue, concombre, œuf, tomate, chou, poivron, oignon, carotte, maïs' },
                 { name: 'SALADE NIÇOISE', price: '4.500', description: 'Laitue, tomate, oignon, œuf dur, carotte, haricot vert, thon, pomme de terre' },
                 { name: 'SALADE DE JAMBON', price: '4.000', description: 'Macédoine, œuf dur, tomate, laitue, oignon, maïs, jambon' },
-                { name: 'SALADE AVOCAT AU THON', price: '4.500', description: 'Avocat, tomate, thon, laitue, carotte, maïs, concombre' },
+                { name: 'SALADE AVOCAT AU THON', price: '4.500', description: 'Avocat, tomate, thon, laitue, carrota, maïs, concombre' },
                 { name: 'SALADE CÉSAR', price: '5.000', description: 'Crouton de pain, laitue, poulet, poivron, maïs, fromage' },
                 { name: 'SALADE FRANÇAISE', price: '4.000', description: 'Tomate, laitue, fromage, maïs, œufs, poivron, carotte, jambon, olive noir' },
                 { name: 'SALADE TOTANGO', price: '5.000', description: 'Laitue, jambon, carotte, crevette, oignon, poivron, tomate' },
               ]},
               { title: 'PLATS PRINCIPAUX', items: [
-                { name: 'POULET GRILLÉ À LA SAUCE TOMATE', price: '6.000', description: '' },
+                { name: '1/4 POULET GRILLÉ À LA SAUCE TOMATE', price: '6.000', description: '' },
                 { name: 'POULET DG', price: '6.000', description: '' },
                 { name: 'PILON DE POULET', price: '5.000', description: '' },
                 { name: 'CUISSE DE POULET FRITE', price: '4.500', description: '' },
-                { name: 'TOTANGO', price: '6.000', description: '' },
                 { name: 'CUISSE SAUTÉE AUX PETITS POIS', price: '5.000', description: '' },
                 { name: 'KFC POULET', price: '5.500', description: '' },
                 { name: 'ÉMINCÉ DE VIANDE', price: '6.000', description: '' },
@@ -668,7 +735,6 @@
                 { name: 'STEAK AUX FROMAGES FONDANT', price: '7.000', description: '' },
                 { name: 'STEAK AUX LÉGUMES SAUTÉS', price: '6.500', description: '' },
                 { name: 'BŒUF AUX CHAMPIGNONS', price: '6.000', description: '' },
-                { name: 'QUEUE DE BŒUF SAUTÉE', price: '5.500', description: '' },
               ]},
               { title: 'PLATS AFRICAINS', items: [
                 { name: 'FOUR TOUT', price: '6.000', description: 'Légume vert, poisson fumé, poisson salé, aubergine violette, courge' },
@@ -695,11 +761,10 @@
                 { name: 'GRATIN DE BŒUF À LA PURÉE DE POMME DE TERRE', price: '6.000', description: 'Bœuf haché bien épicé, purée de pomme de terre' },
                 { name: 'RISOTTO', price: '4.000', description: 'Riz épicé, carotte, petits pois, viande hachée, chou, poivron, oignon, carotte, maïs' },
               ]},
-            ]
+            ],
           },
           {
             name: 'FOOD II',
-            subtitle: 'Menu',
             sections: [
               { title: 'PASTA', items: [
                 { name: 'PASTA SAUCE TOMATE', price: '2.500', description: '' },
@@ -762,7 +827,7 @@
                 { name: 'BANANE', price: '1.500', description: '' },
                 { name: 'BANANE VAPEUR', price: '2.000', description: '' },
                 { name: 'MANIOC', price: '500', description: '' },
-                { name: 'RIZ COMPOSE', price: '2.500', description: '' },
+                { name: 'RIZ COMPOSÉ', price: '2.500', description: '' },
                 { name: 'RIZ BLANC', price: '1.000', description: '' },
                 { name: 'RIZ CANTONAIS', price: '3.000', description: '' },
                 { name: 'COUSCOUS', price: '2.000', description: '' },
@@ -775,13 +840,12 @@
                 { name: 'ASSIETTE CHAMPIGNON', price: '2.000', description: '' },
                 { name: 'SAUCE ITALIENNE (OSEILLE BIEN HACHÉE)', price: '1.500', description: '' },
               ]},
-            ]
+            ],
           },
           {
             name: 'DRINKS I',
-            subtitle: 'Boissons & Cocktails',
             sections: [
-              { title: 'EAU & BOISSONS', items: [
+              { title: 'BOISSONS', items: [
                 { name: 'EAU P.M.', price: '500', description: '' },
                 { name: 'EAU G.M.', price: '1.000', description: '' },
                 { name: 'VERRE D\'EAU CHAUDE AU CITRON', price: '1.000', description: '' },
@@ -802,30 +866,22 @@
                 { name: 'JUS FAIT MAISON ANANAS', price: '2.000', description: '' },
                 { name: 'JUS D\'ORANGE PRESSÉ', price: '2.000', description: '' },
               ]},
-              { title: 'BOISSONS GAZEUSES', items: [
-                { name: 'CUCA', price: '700', description: '' },
-                { name: 'BIÈRES LOCALES', price: '800 / 1.000', description: '' },
-                { name: 'JUS', price: '800 / 1.000', description: '' },
-                { name: '1664', price: '1.500', description: '' },
-                { name: 'REAKTOR', price: '1.000', description: '' },
-                { name: 'LOCO', price: '1.000', description: '' },
-              ]},
               { title: 'COCKTAILS NON ALCOOLISÉS', items: [
                 { name: 'BORA-BORA', price: '3.500', description: 'Jus d\'ananas, jus d\'orange, sirop de fruit de la passion, sirop de grenadine' },
                 { name: 'BASSIN DU CONGO', price: '3.500', description: 'Jus d\'ananas, jus de mangue, jus de citron pressé, sirop de menthe' },
-                { name: 'BLUE HAWAÏ (VIRGIN)', price: '4.000', description: 'Jus d\'ananas, crème fraîche / lait, sirop de noix de coco, sirop bleu curacao, crème chantilly' },
+                { name: 'BLUE HAWAÏ (VIRGIN)', price: '4.000', description: 'Jus d\'ananas, crème fraîche/lait, sirop de noix de coco, sirop bleu curacao, crème chantilly' },
                 { name: 'FRUIT PUNCH', price: '3.500', description: 'Jus d\'ananas, jus d\'orange, jus de mangue, sirop de fraise, jus de citron pressé, sirop de passion' },
                 { name: 'PÈRE NOËL', price: '3.500', description: 'Jus d\'ananas, jus d\'orange, citron pressé, sirop de grenadine, crème chantilly' },
                 { name: 'CIEL BLEU', price: '4.000', description: 'Jus d\'ananas, crème fraîche, sirop de curacao bleu, sirop de canne, crème chantilly' },
                 { name: 'CONGO COLOR', price: '3.500', description: 'Jus d\'orange, citron pressé, sirop bleu curacao, sirop de grenadine, sirop de menthe' },
                 { name: 'VIRGIN FRAISE COLADA', price: '4.000', description: 'Jus d\'ananas, crème fraîche, sirop de fraise, sirop de noix de coco, crème chantilly' },
-                { name: 'VIRGIN COLADA', price: '4.000', description: 'Jus d\'ananas, crème fraîche / lait, sirop de noix de coco, crème chantilly' },
+                { name: 'VIRGIN COLADA', price: '4.000', description: 'Jus d\'ananas, crème fraîche/lait, sirop de noix de coco, crème chantilly' },
                 { name: 'VIRGIN MOJITO CLASSIQUE', price: '3.500', description: 'Citron, menthe, sirop de canne, soda/Sprite/perrier' },
                 { name: 'VIRGIN MOJITO FRAISE', price: '3.500', description: 'Citron, menthe, sirop de fraise, soda/Sprite/perrier' },
                 { name: 'VIRGIN MOJITO PASSION', price: '3.500', description: 'Citron, feuilles de menthe, fruit de la passion, Sprite/jus d\'orange' },
                 { name: 'VIRGIN MOJITO FRAMBOISE', price: '3.500', description: 'Feuilles de menthe, citron, sirop de framboise, soda/Sprite/perrier' },
               ]},
-              { title: 'SMILKSHAKES', items: [
+              { title: 'SMOOTHIES & MILKSHAKES', items: [
                 { name: 'SMOOTHIE BANANE FRAISE', price: '4.000', description: '' },
                 { name: 'SMOOTHIE BANANE FRAMBOISE', price: '4.000', description: '' },
                 { name: 'SMOOTHIE BANANE MIEL', price: '4.000', description: '' },
@@ -868,11 +924,10 @@
                 { name: 'COCKTAIL SIGNATURE', price: '5.000', description: 'Surprise du maître' },
                 { name: 'MOJITO ALCOOLÉ', price: '5.000', description: 'Citron, menthe, sirop de canne, soda/rhum' },
               ]},
-            ]
+            ],
           },
           {
             name: 'DRINKS II',
-            subtitle: 'Spiritueux & Vins',
             sections: [
               { title: 'WHISKY', items: [
                 { name: 'SIREWARD\'S', price: '1.500 / 10.000', description: 'Verre / Bouteille' },
@@ -922,7 +977,7 @@
                 { name: 'AMARULA', price: '2.500 / 16.000', description: '' },
                 { name: 'BAILEY\'S', price: '2.500 / 18.000', description: '' },
                 { name: 'CAMPARI', price: '2.500 / 15.000', description: '' },
-                { name: 'MARTINIC BLANC/ROUGE', price: '2.000 / 15.000', description: '' },
+                { name: 'MARTINI BLANC/ROUGE', price: '2.000 / 15.000', description: '' },
                 { name: 'COINTREAU', price: '3.000 / 30.000', description: '' },
                 { name: 'GET 27/31', price: '2.500 / 25.000', description: '' },
                 { name: 'SHERIDAN\'S', price: '3.000 / 30.000', description: '' },
@@ -959,11 +1014,6 @@
                 { name: 'VIVE LA VIE BLANC', price: '10.000', description: '' },
                 { name: 'VIVE LA VIE ROSÉ', price: '10.000', description: '' },
               ]},
-              { title: 'VINS NON ALCOOLISÉS', items: [
-                { name: 'MERLOT 1 LITRE', price: '12.000', description: '' },
-                { name: 'VINS MOUSSEUX BLANC', price: '7.000', description: '' },
-                { name: 'VINS MOUSSEUX ROSÉ', price: '7.000', description: '' },
-              ]},
               { title: 'CHAMPAGNE', items: [
                 { name: 'NICOLAS FEUILLATTE BRUT', price: '40.000', description: '' },
                 { name: 'NICOLAS FEUILLATTE ICE', price: '40.000', description: '' },
@@ -971,24 +1021,27 @@
                 { name: 'MOËT BRUT', price: '55.000', description: '' },
                 { name: 'MOËT ICE', price: '70.000', description: '' },
               ]},
-              { title: 'TEQUILA', items: [
-                { name: 'SHOT', price: '1.000', description: '' },
-                { name: 'SHOT MULTICOLOR', price: '1.000', description: '' },
-                { name: 'TEQUILA', price: '1.000 / 18.000', description: '' },
-              ]},
-            ]
+            ],
           },
         ]);
         
+        // Add computed columns to each menu
+        const menusWithCols = computed(() => {
+          return menus.value.map(m => ({
+            ...m,
+            columns: buildColumns(m.sections)
+          }));
+        });
+        
         function addItem(sectionIdx) {
-          addItemTarget.value = sectionIdx;
+          addItemTarget.value = { col: 0, sec: sectionIdx };
           newItem.value = { name: '', price: '', description: '' };
           showAddModal.value = true;
         }
         
         function confirmAddItem() {
           if (!newItem.value.name) return;
-          menus.value[currentMenu.value].sections[addItemTarget.value].items.push({
+          menus.value[currentMenu.value].sections[addItemTarget.value.sec].items.push({
             name: newItem.value.name,
             price: newItem.value.price,
             description: newItem.value.description
@@ -1002,6 +1055,7 @@
         
         function addSection() {
           newSectionTitle.value = '';
+          newSectionColumn.value = '0';
           showSectionModal.value = true;
         }
         
@@ -1014,9 +1068,7 @@
           showSectionModal.value = false;
         }
         
-        function printPDF() {
-          window.print();
-        }
+        function printPDF() { window.print(); }
         
         function exportJSON() {
           const blob = new Blob([JSON.stringify(menus.value, null, 2)], { type: 'application/json' });
@@ -1028,16 +1080,11 @@
           URL.revokeObjectURL(url);
         }
         
-        function shouldSplit(sections, sIdx) {
-          // For now, just return false (all sections in grid)
-          return false;
-        }
-        
         return {
-          menus, currentMenu, showAddModal, showSectionModal,
-          newItem, newSectionTitle, restaurantName, currency, footerText,
+          menus: menusWithCols, currentMenu, showAddModal, showSectionModal,
+          newItem, newSectionTitle, newSectionColumn,
           addItem, confirmAddItem, deleteItem, addSection, confirmAddSection,
-          printPDF, exportJSON, shouldSplit
+          printPDF, exportJSON
         };
       }
     }).mount('#app');
