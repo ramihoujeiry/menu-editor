@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
@@ -445,65 +447,92 @@
     /* ===== PRINT ===== */
     @media print {
       @page {
-        size: Letter portrait;
-        margin: 0.2in;
+        size: 8.5in 11in;
+        margin: 0 !important;
       }
-      html, body { 
-        background: #34383A !important; 
+      html { 
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
+        width: 8.5in !important;
+        height: 11in !important;
+        background: #34383A !important;
+      }
+      body { 
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 8.5in !important;
+        height: 11in !important;
         overflow: hidden !important;
+        background: #34383A !important;
+        position: relative !important;
+      }
+      body::before {
+        content: '' !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: #34383A !important;
+        z-index: -9999 !important;
       }
       .sidebar, .preview-toolbar, .sidebar-toggle { display: none !important; }
       .preview-container { 
         display: block !important; 
-        width: 100vw !important;
-        height: 100vh !important;
+        width: 8.5in !important;
+        height: 11in !important;
         overflow: hidden !important;
+        background: #34383A !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: relative !important;
       }
       .preview-scroll { 
         padding: 0 !important; 
         overflow: hidden !important; 
         background: #34383A !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: flex-start !important;
-        width: 100vw !important;
-        height: 100vh !important;
+        display: block !important;
+        width: 8.5in !important;
+        height: 11in !important;
+        margin: 0 !important;
+        position: relative !important;
       }
       .menu-page-wrapper { 
         transform: none !important; 
         margin: 0 !important;
         padding: 0 !important;
-        width: auto !important;
-        height: auto !important;
+        width: 8.5in !important;
+        height: 11in !important;
         display: block !important;
         page-break-after: avoid !important;
         break-after: avoid !important;
+        background: #34383A !important;
+        position: relative !important;
       }
       .menu-page { 
         box-shadow: none !important; 
         margin: 0 !important;
-        width: 8in !important;
-        height: 10.5in !important;
+        width: 8.5in !important;
+        height: 11in !important;
         transform: none !important;
         page-break-after: avoid !important;
         page-break-inside: avoid !important;
         break-after: avoid !important;
         break-inside: avoid !important;
         overflow: hidden !important;
+        background: #34383A !important;
+        position: relative !important;
       }
       .menu-content {
-        height: 10.5in !important;
+        height: 11in !important;
         padding: 0.3in 0.2in 0.3in 0.3in !important;
-        margin-right: 1.5in !important;
+        margin-right: 1.8in !important;
         gap: 0 0.15in !important;
+        background: #34383A !important;
       }
       .logo-sidebar { 
         background: #34383A !important;
-        width: 1.5in !important;
+        width: 1.8in !important;
         padding: 0.2in 0.1in !important;
       }
       .logo-sidebar img {
@@ -522,6 +551,7 @@
       * { 
         -webkit-print-color-adjust: exact !important; 
         print-color-adjust: exact !important; 
+        color-adjust: exact !important;
       }
     }
     
@@ -1086,7 +1116,38 @@
           showSectionModal.value = false;
         }
         
-        function printPDF() { window.print(); }
+        function printPDF() {
+          const menuPage = document.querySelector('.menu-page');
+          if (!menuPage) return;
+          
+          // Use html2canvas to capture the menu with correct background
+          html2canvas(menuPage, {
+            backgroundColor: '#34383A',
+            scale: 2,
+            useCORS: true,
+            logging: false
+          }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'letter');
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            
+            // Calculate image dimensions to fit page
+            const imgWidth = pageWidth;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            
+            // If image is taller than page, scale to fit
+            if (imgHeight > pageHeight) {
+              const ratio = pageHeight / imgHeight;
+              pdf.addImage(imgData, 'PNG', 0, 0, imgWidth * ratio, pageHeight * ratio);
+            } else {
+              pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+            }
+            
+            pdf.save('TOTANGO-Menu.pdf');
+          });
+        }
         
         function exportJSON() {
           const blob = new Blob([JSON.stringify(menus.value, null, 2)], { type: 'application/json' });
