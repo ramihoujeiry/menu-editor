@@ -11,22 +11,20 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
     :root {
-      --bg-dark: #1a1a1a;
+      --bg-page: #34383A;
       --bg-card: #242424;
       --bg-input: #2e2e2e;
-      --gold: #d4a843;
-      --gold-light: #e8c96a;
-      --gold-dark: #b8922e;
-      --text: #f0f0f0;
-      --text-dim: #999;
+      --gold: #EEC01B;
+      --gold-dark: #d4a832;
+      --text: #ffffff;
+      --text-dim: #aaa;
       --border: #3a3a3a;
       --danger: #e74c3c;
-      --success: #2ecc71;
     }
     
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--bg-dark);
+      background: var(--bg-card);
       color: var(--text);
       min-height: 100vh;
     }
@@ -57,17 +55,17 @@
       top: 10px;
       z-index: 100;
       background: var(--gold);
-      color: #1a1a1a;
+      color: #000;
       border: none;
       border-radius: 6px;
       padding: 8px 12px;
       font-size: 16px;
       cursor: pointer;
+      font-weight: bold;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      transition: left 0.3s;
     }
     
-    .sidebar-toggle:hover { background: var(--gold-light); }
+    .sidebar-toggle:hover { background: #f5d03a; }
     
     .sidebar-header {
       padding: 20px 20px 14px;
@@ -76,7 +74,7 @@
     
     .sidebar-header h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 22px;
+      font-size: 20px;
       color: var(--gold);
       letter-spacing: 1px;
     }
@@ -92,7 +90,6 @@
       gap: 4px;
       padding: 10px 14px;
       border-bottom: 1px solid var(--border);
-      overflow-x: auto;
       flex-wrap: wrap;
     }
     
@@ -110,7 +107,7 @@
     }
     
     .menu-tab:hover { background: var(--bg-input); color: var(--text); }
-    .menu-tab.active { background: var(--gold); color: #1a1a1a; border-color: var(--gold); }
+    .menu-tab.active { background: var(--gold); color: #000; }
     
     .editor-area {
       flex: 1;
@@ -146,7 +143,7 @@
       transition: all 0.2s;
     }
     
-    .add-item-btn:hover { background: var(--gold); color: #1a1a1a; border-style: solid; }
+    .add-item-btn:hover { background: var(--gold); color: #000; }
     
     .item-card {
       background: var(--bg-input);
@@ -166,7 +163,7 @@
     }
     
     .item-card input, .item-card textarea {
-      background: var(--bg-dark);
+      background: var(--bg-page);
       border: 1px solid var(--border);
       color: var(--text);
       padding: 6px 8px;
@@ -201,10 +198,25 @@
       padding: 2px 6px;
       border-radius: 4px;
       transition: all 0.2s;
-      flex-shrink: 0;
     }
     
     .delete-btn:hover { color: var(--danger); background: rgba(231,76,60,0.1); }
+    
+    .add-section-btn {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      background: transparent;
+      border: 1px dashed var(--gold-dark);
+      color: var(--gold);
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: all 0.2s;
+    }
+    
+    .add-section-btn:hover { background: var(--gold); color: #000; }
     
     /* ===== PREVIEW ===== */
     .preview-container {
@@ -241,10 +253,10 @@
       transition: all 0.2s;
     }
     
-    .btn-gold { background: var(--gold); color: #1a1a1a; }
-    .btn-gold:hover { background: var(--gold-light); }
+    .btn-gold { background: var(--gold); color: #000; }
+    .btn-gold:hover { background: #f5d03a; }
     .btn-outline { background: transparent; border: 1px solid var(--gold-dark); color: var(--gold); }
-    .btn-outline:hover { background: var(--gold); color: #1a1a1a; }
+    .btn-outline:hover { background: var(--gold); color: #000; }
     
     .preview-scroll {
       flex: 1;
@@ -255,182 +267,186 @@
       align-items: flex-start;
     }
     
-    /* ===== MENU PAGE (matches original PDF exactly) ===== */
+    /* ===== MENU PAGE - EXACT REPLICA ===== */
     .menu-page {
       width: 980.79px;
       min-height: 822.05px;
-      background: #1c1c1c;
+      background: #34383A;
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
+      display: flex;
     }
     
-    /* Botanical leaf pattern overlay */
+    /* Gold border at top */
     .menu-page::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M30,10 Q50,5 70,15 T100,10 M120,25 Q140,15 160,30 T180,25 M20,50 Q40,40 60,55 T90,50 M130,60 Q150,50 170,65 T190,60 M40,90 Q60,80 80,95 T110,90 M140,100 Q160,90 180,105 T200,100 M10,130 Q30,120 50,135 T80,130 M120,140 Q140,130 160,145 T180,140 M30,170 Q50,160 70,175 T100,170 M130,180 Q150,170 170,185 T190,180 M20,20 Q35,25 30,40 T20,50 Q10,40 20,20 M150,70 Q165,75 160,90 T150,100 Q140,90 150,70 M50,120 Q65,125 60,140 T50,150 Q40,140 50,120 M100,160 Q115,165 110,180 T100,190 Q90,180 100,160' fill='none' stroke='%232a2a2a' stroke-width='1' opacity='0.4'/%3E%3Cpath d='M10,30 Q25,20 40,35 T60,30 M80,50 Q95,40 110,55 T130,50 M150,80 Q165,70 180,85 T200,80 M20,110 Q35,100 50,115 T70,110 M90,140 Q105,130 120,145 T140,140 M160,170 Q175,160 190,175 T200,170 M40,180 Q55,170 70,185 T90,180' fill='none' stroke='%23282828' stroke-width='0.8' opacity='0.3'/%3E%3Ccircle cx='30' cy='40' r='8' fill='none' stroke='%23262626' stroke-width='0.8' opacity='0.3'/%3E%3Ccircle cx='150' cy='120' r='12' fill='none' stroke='%23262626' stroke-width='0.8' opacity='0.3'/%3E%3Ccircle cx='80' cy='170' r='6' fill='none' stroke='%23262626' stroke-width='0.8' opacity='0.3'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-      pointer-events: none;
-      z-index: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #EEC01B;
+      z-index: 10;
     }
     
+    /* Main content area */
     .menu-content {
-      position: relative;
-      z-index: 1;
+      flex: 1;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 0 25px;
-      padding: 30px 30px 30px 35px;
+      gap: 0 20px;
+      padding: 25px 20px 25px 25px;
       min-height: 822.05px;
-      padding-right: 200px; /* Leave room for logo */
+      margin-right: 180px; /* Leave room for logo sidebar */
     }
     
-    /* ===== SECTION HEADERS (yellow pill style) ===== */
+    .menu-col {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* ===== SECTION HEADERS ===== */
     .menu-section {
-      margin-bottom: 18px;
+      margin-bottom: 12px;
     }
     
     .menu-section-title {
       display: inline-block;
-      background: #e6b832;
+      background: #EEC01B;
       color: #000;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 5px 16px;
-      border-radius: 20px;
-      margin-bottom: 8px;
+      padding: 4px 14px;
+      border-radius: 15px;
+      margin-bottom: 6px;
       font-family: 'Inter', sans-serif;
     }
     
     /* ===== MENU ITEMS ===== */
     .menu-item {
+      padding: 1px 0;
+    }
+    
+    .menu-item-line {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      padding: 2px 0;
-      gap: 6px;
     }
     
     .menu-item-name {
       font-size: 11px;
       font-weight: 400;
-      flex: 1;
       color: #fff;
-      line-height: 1.4;
+      line-height: 1.3;
       font-family: 'Inter', sans-serif;
-    }
-    
-    .menu-item-desc {
-      font-size: 9px;
-      color: #888;
-      display: block;
-      font-style: italic;
-      margin-top: -2px;
+      flex: 1;
     }
     
     .menu-item-price {
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 400;
       color: #fff;
       white-space: nowrap;
-      align-self: flex-start;
+      margin-left: 8px;
+      font-family: 'Inter', sans-serif;
     }
     
-    /* ===== LOGO AREA ===== */
-    .logo-area {
+    /* ===== LOGO SIDEBAR ===== */
+    .logo-sidebar {
+      width: 180px;
+      background: #34383A;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+      border-left: 1px solid #444;
       position: absolute;
-      right: 25px;
-      top: 40px;
-      text-align: center;
-      z-index: 2;
-      width: 160px;
+      right: 0;
+      top: 0;
+      bottom: 0;
     }
     
     .logo-crown {
-      width: 40px;
-      height: 30px;
-      margin: 0 auto 8px;
-    }
-    
-    .logo-crown svg {
-      width: 100%;
-      height: 100%;
+      margin-bottom: 8px;
     }
     
     .logo-menu-circle {
-      width: 120px;
-      height: 120px;
-      background: #e6b832;
+      width: 100px;
+      height: 100px;
+      background: #EEC01B;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      margin: 0 auto 12px;
+      margin-bottom: 10px;
     }
     
     .logo-menu-text {
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 900;
       color: #000;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       font-family: 'Inter', sans-serif;
       line-height: 1;
     }
     
     .logo-dots {
       display: flex;
-      gap: 5px;
-      margin-top: 4px;
+      gap: 4px;
+      margin-top: 2px;
     }
     
     .logo-dot {
-      width: 5px;
-      height: 5px;
+      width: 4px;
+      height: 4px;
       background: #000;
       border-radius: 50%;
     }
     
     .logo-restaurant {
       font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      color: #e6b832;
+      font-size: 18px;
+      color: #EEC01B;
       letter-spacing: 2px;
       margin-bottom: 2px;
+      text-align: center;
     }
     
     .logo-restaurant-sub {
-      font-size: 11px;
+      font-size: 10px;
       color: #ccc;
       letter-spacing: 1px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      text-align: center;
     }
     
     .logo-phone {
-      font-size: 12px;
+      font-size: 11px;
       color: #ddd;
-      letter-spacing: 0.5px;
+      text-align: center;
+      line-height: 1.5;
       margin-bottom: 10px;
     }
     
     .reservation-box {
-      border: 1px solid #555;
-      padding: 8px 12px;
-      border-radius: 4px;
+      border: 1px solid #666;
+      padding: 6px 10px;
+      border-radius: 3px;
       font-size: 9px;
       color: #bbb;
-      line-height: 1.5;
+      line-height: 1.4;
       text-align: center;
+      width: 100%;
     }
     
     .reservation-box strong {
       display: block;
-      color: #e6b832;
-      font-size: 10px;
+      color: #EEC01B;
+      font-size: 9px;
       margin-bottom: 2px;
     }
     
@@ -495,32 +511,16 @@
     /* ===== PRINT ===== */
     @media print {
       body { background: white; }
-      .sidebar, .preview-toolbar { display: none !important; }
+      .sidebar, .preview-toolbar, .sidebar-toggle { display: none !important; }
       .preview-container { display: block !important; }
       .preview-scroll { padding: 0; overflow: visible; }
       .menu-page { box-shadow: none; margin: 0; }
     }
     
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-track { background: var(--bg-page); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
-    
-    .add-section-btn {
-      display: block;
-      width: 100%;
-      padding: 8px;
-      background: transparent;
-      border: 1px dashed var(--gold-dark);
-      color: var(--gold);
-      border-radius: 6px;
-      font-size: 12px;
-      cursor: pointer;
-      margin-top: 14px;
-      transition: all 0.2s;
-    }
-    
-    .add-section-btn:hover { background: var(--gold); color: #1a1a1a; }
   </style>
 </head>
 <body>
@@ -583,22 +583,60 @@
       
       <div class="preview-scroll">
         <div class="menu-page" :id="'menu-page-' + currentMenu">
-          <!-- Logo Area -->
-          <div class="logo-area">
+          <!-- Main Content -->
+          <div class="menu-content">
+            <!-- Left Column -->
+            <div class="menu-col">
+              <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
+                <div class="menu-section" v-if="section.title && section.items.length">
+                  <div class="menu-section-title">{{ section.title }}</div>
+                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                    <div class="menu-item-line">
+                      <span class="menu-item-name">{{ item.name }}</span>
+                      <span class="menu-item-price">{{ item.price }}</span>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+            
+            <!-- Middle Column -->
+            <div class="menu-col">
+              <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
+                <div class="menu-section" v-if="section.title && section.items.length">
+                  <div class="menu-section-title">{{ section.title }}</div>
+                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                    <div class="menu-item-line">
+                      <span class="menu-item-name">{{ item.name }}</span>
+                      <span class="menu-item-price">{{ item.price }}</span>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+            
+            <!-- Right Column (before logo) -->
+            <div class="menu-col">
+              <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
+                <div class="menu-section" v-if="section.title && section.items.length">
+                  <div class="menu-section-title">{{ section.title }}</div>
+                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                    <div class="menu-item-line">
+                      <span class="menu-item-name">{{ item.name }}</span>
+                      <span class="menu-item-price">{{ item.price }}</span>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+          
+          <!-- Logo Sidebar -->
+          <div class="logo-sidebar">
             <div class="logo-crown">
-              <svg viewBox="0 0 60 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Crown base -->
-                <rect x="8" y="32" width="44" height="8" rx="2" fill="#e6b832"/>
-                <!-- Crown points -->
-                <path d="M8 32 L14 12 L20 24 L26 8 L32 24 L38 12 L44 32 Z" fill="#e6b832" stroke="#d4a832" stroke-width="1"/>
-                <!-- Gems on crown points -->
-                <circle cx="14" cy="12" r="3" fill="#d4a832"/>
-                <circle cx="20" cy="24" r="2.5" fill="#d4a832"/>
-                <circle cx="26" cy="8" r="3.5" fill="#d4a832"/>
-                <circle cx="32" cy="24" r="2.5" fill="#d4a832"/>
-                <circle cx="38" cy="12" r="3" fill="#d4a832"/>
-                <!-- T letter in center -->
-                <text x="30" y="27" text-anchor="middle" fill="#000" font-size="12" font-weight="bold" font-family="serif">T</text>
+              <svg width="35" height="25" viewBox="0 0 35 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 22 L8 5 L13 14 L18 2 L23 14 L28 5 L33 22 Z" fill="#EEC01B" stroke="#EEC01B" stroke-width="1"/>
+                <rect x="3" y="22" width="30" height="3" fill="#EEC01B"/>
               </svg>
             </div>
             <div class="logo-menu-circle">
@@ -611,61 +649,10 @@
             </div>
             <div class="logo-restaurant">TOTANGO</div>
             <div class="logo-restaurant-sub">RESTAURANT</div>
-            <div class="logo-phone">Tel : 06 834 16 68 / 05 064 31 31</div>
+            <div class="logo-phone">06 834 16 68<br/>05 064 31 31</div>
             <div class="reservation-box">
               <strong>RÉSERVATION ANNIVERSAIRE</strong>
               500 FCFA / personne — du lundi au vendredi
-            </div>
-          </div>
-          
-          <!-- Menu Content -->
-          <div class="menu-content">
-            <!-- Left Column -->
-            <div class="menu-col">
-              <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
-                <div class="menu-section" v-if="section.title && section.items.length">
-                  <div class="menu-section-title">{{ section.title }}</div>
-                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                    <span class="menu-item-name">
-                      {{ item.name }}
-                      <span v-if="item.description" class="menu-item-desc">{{ item.description }}</span>
-                    </span>
-                    <span class="menu-item-price">{{ item.price }}</span>
-                  </div>
-                </div>
-              </template>
-            </div>
-            
-            <!-- Middle Column -->
-            <div class="menu-col">
-              <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
-                <div class="menu-section" v-if="section.title && section.items.length">
-                  <div class="menu-section-title">{{ section.title }}</div>
-                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                    <span class="menu-item-name">
-                      {{ item.name }}
-                      <span v-if="item.description" class="menu-item-desc">{{ item.description }}</span>
-                    </span>
-                    <span class="menu-item-price">{{ item.price }}</span>
-                  </div>
-                </div>
-              </template>
-            </div>
-            
-            <!-- Right Column -->
-            <div class="menu-col">
-              <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
-                <div class="menu-section" v-if="section.title && section.items.length">
-                  <div class="menu-section-title">{{ section.title }}</div>
-                  <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                    <span class="menu-item-name">
-                      {{ item.name }}
-                      <span v-if="item.description" class="menu-item-desc">{{ item.description }}</span>
-                    </span>
-                    <span class="menu-item-price">{{ item.price }}</span>
-                  </div>
-                </div>
-              </template>
             </div>
           </div>
         </div>
@@ -710,7 +697,7 @@
   </div>
 
   <script>
-    const { createApp, ref, computed, watch } = Vue;
+    const { createApp, ref, computed } = Vue;
     
     createApp({
       setup() {
@@ -726,7 +713,7 @@
         // Helper: build column layout from flat sections
         function buildColumns(sections) {
           const cols = [[], [], []];
-          // Distribute sections across columns (roughly evenly)
+          // Distribute sections across columns
           const perCol = Math.ceil(sections.length / 3);
           sections.forEach((sec, i) => {
             const colIdx = Math.min(Math.floor(i / perCol), 2);
@@ -740,67 +727,67 @@
             name: 'FOOD I',
             sections: [
               { title: 'OMELETTES', items: [
-                { name: 'OMELETTE NATURE', price: '2.500', description: '' },
-                { name: 'OMELETTE JAMBON', price: '3.000', description: '' },
-                { name: 'OMELETTE FROMAGE', price: '3.000', description: '' },
-                { name: 'OMELETTE JAMBON FROMAGE', price: '3.500', description: '' },
-                { name: 'OMELETTE VIANDE HACHÉE', price: '3.000', description: '' },
-                { name: 'OMELETTE MIXTE (2 INGRÉDIENTS AU CHOIX)', price: '3.500', description: '' },
-                { name: 'OMELETTE EXTRA (3 INGRÉDIENTS AU CHOIX)', price: '4.000', description: '' },
+                { name: 'OMELETTE NATURE', price: '2.500' },
+                { name: 'OMELETTE JAMBON', price: '3.000' },
+                { name: 'OMELETTE FROMAGE', price: '3.000' },
+                { name: 'OMELETTE JAMBON FROMAGE', price: '3.500' },
+                { name: 'OMELETTE VIANDE HACHÉE', price: '3.000' },
+                { name: 'OMELETTE MIXTE', price: '3.500' },
+                { name: 'OMELETTE EXTRA', price: '4.000' },
               ]},
               { title: 'SALADES', items: [
-                { name: 'SALADE AVOCAT', price: '4.500', description: 'Avocat, laitue, maïs, carotte, concombre, oignon, tomate' },
-                { name: 'SALADE DU CHEF', price: '4.500', description: 'Tomate, fromage, jambon, œuf, carotte, maïs, champignon, poulet, laitue, oignon' },
-                { name: 'SALADE DE CRUDITÉ', price: '3.500', description: 'Laitue, concombre, œuf, tomate, chou, poivron, oignon, carotte, maïs' },
-                { name: 'SALADE NIÇOISE', price: '4.500', description: 'Laitue, tomate, oignon, œuf dur, carotte, haricot vert, thon, pomme de terre' },
-                { name: 'SALADE DE JAMBON', price: '4.000', description: 'Macédoine, œuf dur, tomate, laitue, oignon, maïs, jambon' },
-                { name: 'SALADE AVOCAT AU THON', price: '4.500', description: 'Avocat, tomate, thon, laitue, carrota, maïs, concombre' },
-                { name: 'SALADE CÉSAR', price: '5.000', description: 'Crouton de pain, laitue, poulet, poivron, maïs, fromage' },
-                { name: 'SALADE FRANÇAISE', price: '4.000', description: 'Tomate, laitue, fromage, maïs, œufs, poivron, carotte, jambon, olive noir' },
-                { name: 'SALADE TOTANGO', price: '5.000', description: 'Laitue, jambon, carotte, crevette, oignon, poivron, tomate' },
+                { name: 'SALADE AVOCAT', price: '4.500' },
+                { name: 'SALADE DU CHEF', price: '4.500' },
+                { name: 'SALADE DE CRUDITÉ', price: '3.500' },
+                { name: 'SALADE NIÇOISE', price: '4.500' },
+                { name: 'SALADE DE JAMBON', price: '4.000' },
+                { name: 'SALADE AVOCAT AU THON', price: '4.500' },
+                { name: 'SALADE CÉSAR', price: '5.000' },
+                { name: 'SALADE FRANÇAISE', price: '4.000' },
+                { name: 'SALADE TOTANGO', price: '5.000' },
               ]},
               { title: 'PLATS PRINCIPAUX', items: [
-                { name: '1/4 POULET GRILLÉ À LA SAUCE TOMATE', price: '6.000', description: '' },
-                { name: 'POULET DG', price: '6.000', description: '' },
-                { name: 'PILON DE POULET', price: '5.000', description: '' },
-                { name: 'CUISSE DE POULET FRITE', price: '4.500', description: '' },
-                { name: 'CUISSE SAUTÉE AUX PETITS POIS', price: '5.000', description: '' },
-                { name: 'KFC POULET', price: '5.500', description: '' },
-                { name: 'ÉMINCÉ DE VIANDE', price: '6.000', description: '' },
-                { name: 'ÉMINCÉ DE POULET', price: '5.500', description: '' },
-                { name: 'RAGOÛT DE VIANDE', price: '6.000', description: '' },
-                { name: 'RAGOÛT DE POULET', price: '5.500', description: '' },
-                { name: 'STEAK NATURE', price: '6.000', description: '' },
-                { name: 'STEAK AUX PETITS POIS', price: '6.500', description: '' },
-                { name: 'STEAK AUX CHAMPIGNONS À LA CRÈME FRAÎCHE', price: '7.500', description: '' },
-                { name: 'STEAK AUX FROMAGES FONDANT', price: '7.000', description: '' },
-                { name: 'STEAK AUX LÉGUMES SAUTÉS', price: '6.500', description: '' },
-                { name: 'BŒUF AUX CHAMPIGNONS', price: '6.000', description: '' },
+                { name: '1/4 POULET GRILLÉ SAUCE TOMATE', price: '6.000' },
+                { name: 'POULET DG', price: '6.000' },
+                { name: 'PILON DE POULET', price: '5.000' },
+                { name: 'CUISSE DE POULET FRITE', price: '4.500' },
+                { name: 'CUISSE SAUTÉE AUX PETITS POIS', price: '5.000' },
+                { name: 'KFC POULET', price: '5.500' },
+                { name: 'ÉMINCÉ DE VIANDE', price: '6.000' },
+                { name: 'ÉMINCÉ DE POULET', price: '5.500' },
+                { name: 'RAGOÛT DE VIANDE', price: '6.000' },
+                { name: 'RAGOÛT DE POULET', price: '5.500' },
+                { name: 'STEAK NATURE', price: '6.000' },
+                { name: 'STEAK AUX PETITS POIS', price: '6.500' },
+                { name: 'STEAK AUX CHAMPIGNONS CRÈME', price: '7.500' },
+                { name: 'STEAK AUX FROMAGES FONDANT', price: '7.000' },
+                { name: 'STEAK AUX LÉGUMES SAUTÉS', price: '6.500' },
+                { name: 'BŒUF AUX CHAMPIGNONS', price: '6.000' },
               ]},
               { title: 'PLATS AFRICAINS', items: [
-                { name: 'FOUR TOUT', price: '6.000', description: 'Légume vert, poisson fumé, poisson salé, aubergine violette, courge' },
-                { name: 'SAKA-SAKA', price: '2.500', description: '' },
-                { name: 'BROCHETTE DE POULET', price: '5.000', description: '' },
-                { name: 'POISSON FUMÉ À LA PÂTE D\'ARACHIDE', price: '6.000', description: '' },
-                { name: 'FILET DE POISSON BARRÉ À LA SAUCE GÉNIALE', price: '7.000', description: '' },
-                { name: 'POULET À LA PÂTE D\'ARACHIDE', price: '5.000', description: '' },
-                { name: 'TERRE ET MER HABDECK', price: '7.500', description: 'Filet de poisson barré, purée de pomme de terre, légumes' },
-                { name: 'ASSIETTE CREVETTE SAUTÉE', price: '7.000', description: '' },
-                { name: 'ASSIETTE SHAWARMA POULET', price: '5.000', description: '' },
-                { name: 'ASSIETTE SHAWARMA VIANDE', price: '6.000', description: '' },
-                { name: 'ASSIETTE MIXTE TOTANGO', price: '6.000', description: '' },
-                { name: 'ASSIETTE CRISPY', price: '6.000', description: '' },
-                { name: 'ASSIETTE BROCHETTE MIXTE', price: '5.500', description: '' },
-                { name: 'VIANDE DE BŒUF À LA PÂTE D\'ARACHIDE', price: '6.000', description: '' },
-                { name: 'BOUILLON DE POISSON D\'EAU DOUCE', price: '6.000', description: 'Mopongo, Mboka, Silure' },
-                { name: 'POULET YASSA', price: '5.500', description: '' },
-                { name: 'COURGE À LA SAUCE PIQUANTE', price: '4.000', description: 'Courge, sauce tomate pimentée, oignons caramélisés' },
-                { name: 'PAPILLOTE DE POISSON À L\'ANCIENNE', price: '6.000', description: 'Silure, Mopongo, Mboka' },
-                { name: 'ENTRECÔTE DE BŒUF OSSEUX AUX LÉGUMES', price: '8.000', description: '' },
-                { name: 'DU PÊCHEUR (Bar, crevette, champignon)', price: '8.000', description: '' },
-                { name: 'ENTRECÔTE DE BŒUF AUX LÉGUMES BEAUJARDIN', price: '9.000', description: '' },
-                { name: 'GRATIN DE BŒUF À LA PURÉE DE POMME DE TERRE', price: '6.000', description: 'Bœuf haché bien épicé, purée de pomme de terre' },
-                { name: 'RISOTTO', price: '4.000', description: 'Riz épicé, carotte, petits pois, viande hachée, chou, poivron, oignon, carotte, maïs' },
+                { name: 'FOUR TOUT', price: '6.000' },
+                { name: 'SAKA-SAKA', price: '2.500' },
+                { name: 'BROCHETTE DE POULET', price: '5.000' },
+                { name: 'POISSON FUMÉ SAUCE ARACHIDE', price: '6.000' },
+                { name: 'FILET POISSON SAUCE GÉNIALE', price: '7.000' },
+                { name: 'POULET SAUCE ARACHIDE', price: '5.000' },
+                { name: 'TERRE ET MER HABDECK', price: '7.500' },
+                { name: 'ASSIETTE CREVETTE SAUTÉE', price: '7.000' },
+                { name: 'ASSIETTE SHAWARMA POULET', price: '5.000' },
+                { name: 'ASSIETTE SHAWARMA VIANDE', price: '6.000' },
+                { name: 'ASSIETTE MIXTE TOTANGO', price: '6.000' },
+                { name: 'ASSIETTE CRISPY', price: '6.000' },
+                { name: 'ASSIETTE BROCHETTE MIXTE', price: '5.500' },
+                { name: 'VIANDE BŒUF SAUCE ARACHIDE', price: '6.000' },
+                { name: 'BOUILLON POISSON EAU DOUCE', price: '6.000' },
+                { name: 'POULET YASSA', price: '5.500' },
+                { name: 'COURGE SAUCE PIQUANTE', price: '4.000' },
+                { name: 'PAPILLOTE POISSON À L\'ANCIENNE', price: '6.000' },
+                { name: 'ENTRECÔTE BŒUF AUX LÉGUMES', price: '8.000' },
+                { name: 'DU PÊCHEUR', price: '8.000' },
+                { name: 'ENTRECÔTE BEAUJARDIN', price: '9.000' },
+                { name: 'GRATIN BŒUF PURÉE', price: '6.000' },
+                { name: 'RISOTTO', price: '4.000' },
               ]},
             ],
           },
@@ -808,78 +795,78 @@
             name: 'FOOD II',
             sections: [
               { title: 'PASTA', items: [
-                { name: 'PASTA SAUCE TOMATE', price: '2.500', description: '' },
-                { name: 'PASTA BLANC DE POULET (À LA CRÈME FRAÎCHE)', price: '5.500', description: '' },
-                { name: 'PASTA BOLOGNAISE', price: '4.500', description: '' },
-                { name: 'PASTA CARBONARA', price: '5.500', description: '' },
+                { name: 'PASTA SAUCE TOMATE', price: '2.500' },
+                { name: 'PASTA BLANC DE POULET', price: '5.500' },
+                { name: 'PASTA BOLOGNAISE', price: '4.500' },
+                { name: 'PASTA CARBONARA', price: '5.500' },
               ]},
               { title: 'SANDWICHES', items: [
-                { name: 'SHAWARMA POULET', price: '1.500', description: '' },
-                { name: 'SHAWARMA VIANDE', price: '2.000', description: '' },
-                { name: 'SANDWICH POULET', price: '2.500', description: '' },
-                { name: 'SANDWICH VIANDE', price: '3.000', description: '' },
-                { name: 'SANDWICH JAMBON FROMAGE', price: '3.000', description: '' },
-                { name: 'SANDWICH AU THON', price: '3.500', description: 'Thon, mayo, laitue, cornichon, tomate' },
+                { name: 'SHAWARMA POULET', price: '1.500' },
+                { name: 'SHAWARMA VIANDE', price: '2.000' },
+                { name: 'SANDWICH POULET', price: '2.500' },
+                { name: 'SANDWICH VIANDE', price: '3.000' },
+                { name: 'SANDWICH JAMBON FROMAGE', price: '3.000' },
+                { name: 'SANDWICH AU THON', price: '3.500' },
               ]},
               { title: 'PIZZAS', items: [
-                { name: 'PIZZA AMÉRICAINE', price: '6.000', description: 'Sauce tomate, viande hachée, œuf, mozzarella, origan' },
-                { name: 'PIZZA REINE', price: '5.500', description: 'Sauce tomate, jambon, champignon, mozzarella, origan' },
-                { name: 'PIZZA VÉGÉTARIENNE', price: '5.000', description: 'Sauce tomate, mozzarella, tomate fraîche, poivron, oignon, maïs, olive, champignon' },
-                { name: 'PIZZA MEXICAINE', price: '6.000', description: 'Sauce tomate, jambon, chorizo, origan, olive noire, mozzarella' },
-                { name: 'PIZZA MARGUERITA', price: '5.000', description: 'Sauce tomate, olive noire, mozzarella, origan' },
-                { name: 'PIZZA 4 SAISONS', price: '6.500', description: 'Sauce tomate, olive, champignon, jambon, thon, mozzarella, poivron' },
-                { name: 'PIZZA JAMBON', price: '5.500', description: 'Sauce tomate, olive, jambon, mozzarella' },
-                { name: 'PIZZA AU POULET', price: '5.500', description: 'Sauce tomate, olive, poulet, mozzarella' },
-                { name: 'PIZZA DAME BLANCHE', price: '7.000', description: 'Sauce crème fraîche, jambon, champignon, mozzarella' },
-                { name: 'PIZZA PEPPERONI', price: '6.500', description: 'Sauce tomate, olive noire, mozzarella, pepperoni' },
-                { name: 'PIZZA MERGUEZ', price: '6.500', description: 'Mozzarella, sauce tomate, sauce barbecue, poulet, merguez, oignon, basilic' },
-                { name: 'PIZZA DU CHEF', price: '7.000', description: 'Crème fraîche, viande hachée, champignon, oignon, poivron rondelle, mozzarella' },
-                { name: 'PIZZA HAWAÏENNE', price: '6.000', description: 'Jambon, œuf, champignon, oignon, mozzarella, sauce tomate' },
-                { name: 'PIZZA DG', price: '7.000', description: 'Crème fraîche, jambon, thon, poivron, mozzarella' },
-                { name: 'PIZZA DINDE', price: '5.000', description: 'Oignon, dinde, maïs, mozzarella, basilic, sauce tomate' },
-                { name: 'PIZZA PLAGE', price: '5.000', description: 'Merguez, piment, oignon, mozzarella, sauce tomate' },
-                { name: 'PIZZA TOTANGO', price: '7.000', description: 'Viande hachée, champignon, oignon, mozzarella, crème fraîche' },
-                { name: 'PIZZA EXOTIQUE', price: '6.500', description: 'Jambon, sauce tomate, ananas, mozzarella, miel, poulet' },
-                { name: 'PIZZA CHORIZZO', price: '5.500', description: 'Tomate, chorizo, poivron, mozzarella, sauce tomate' },
-                { name: 'PIZZA LANDAISE', price: '7.000', description: 'Jambon, champignon, oignon, mozzarella, crème fraîche' },
-                { name: 'PIZZA POLLO', price: '7.000', description: 'Sauce tomate, poulet, oignons, maïs, poivrons, champignons, origan, mozzarella' },
-                { name: 'PIZZA NEPTUNE', price: '7.500', description: 'Sauce tomate, thon, œufs, origan, mozzarella' },
+                { name: 'PIZZA AMÉRICAINE', price: '6.000' },
+                { name: 'PIZZA REINE', price: '5.500' },
+                { name: 'PIZZA VÉGÉTARIENNE', price: '5.000' },
+                { name: 'PIZZA MEXICAINE', price: '6.000' },
+                { name: 'PIZZA MARGUERITA', price: '5.000' },
+                { name: 'PIZZA 4 SAISONS', price: '6.500' },
+                { name: 'PIZZA JAMBON', price: '5.500' },
+                { name: 'PIZZA AU POULET', price: '5.500' },
+                { name: 'PIZZA DAME BLANCHE', price: '7.000' },
+                { name: 'PIZZA PEPPERONI', price: '6.500' },
+                { name: 'PIZZA MERGUEZ', price: '6.500' },
+                { name: 'PIZZA DU CHEF', price: '7.000' },
+                { name: 'PIZZA HAWAÏENNE', price: '6.000' },
+                { name: 'PIZZA DG', price: '7.000' },
+                { name: 'PIZZA DINDE', price: '5.000' },
+                { name: 'PIZZA PLAGE', price: '5.000' },
+                { name: 'PIZZA TOTANGO', price: '7.000' },
+                { name: 'PIZZA EXOTIQUE', price: '6.500' },
+                { name: 'PIZZA CHORIZZO', price: '5.500' },
+                { name: 'PIZZA LANDAISE', price: '7.000' },
+                { name: 'PIZZA POLLO', price: '7.000' },
+                { name: 'PIZZA NEPTUNE', price: '7.500' },
               ]},
               { title: 'GRILLADES', items: [
-                { name: 'POULET MAYO + MANIOC', price: '6.000', description: '' },
-                { name: 'POULET MAYO ENTIER', price: '8.000', description: '' },
-                { name: 'CÔTE + MANIOC', price: '3.000', description: '' },
-                { name: 'AILES DE POULET + MANIOC', price: '2.500', description: '' },
-                { name: 'MOUTON + MANIOC', price: '3.000', description: '' },
-                { name: 'POULET ENTIER BRAISÉ + MANIOC', price: '7.500', description: '' },
+                { name: 'POULET MAYO + MANIOC', price: '6.000' },
+                { name: 'POULET MAYO ENTIER', price: '8.000' },
+                { name: 'CÔTE + MANIOC', price: '3.000' },
+                { name: 'AILES DE POULET + MANIOC', price: '2.500' },
+                { name: 'MOUTON + MANIOC', price: '3.000' },
+                { name: 'POULET ENTIER BRAISÉ + MANIOC', price: '7.500' },
               ]},
               { title: 'BURGERS', items: [
-                { name: 'HAMBURGER SIMPLE', price: '2.000', description: '' },
-                { name: 'HAMBURGER ROYAL', price: '3.000', description: '' },
-                { name: 'HAMBURGER CHEESE', price: '2.500', description: '' },
-                { name: 'HAMBURGER DOUBLE', price: '4.000', description: '' },
-                { name: 'HAMBURGER TOTANGO', price: '4.000', description: '' },
-                { name: 'ASSIETTE HAMBURGER (VIANDE/POULET)', price: '5.000', description: '' },
-                { name: 'HAMBURGER POULET SIMPLE', price: '2.000', description: '' },
-                { name: 'HAMBURGER CHEESE POULET', price: '2.500', description: '' },
+                { name: 'HAMBURGER SIMPLE', price: '2.000' },
+                { name: 'HAMBURGER ROYAL', price: '3.000' },
+                { name: 'HAMBURGER CHEESE', price: '2.500' },
+                { name: 'HAMBURGER DOUBLE', price: '4.000' },
+                { name: 'HAMBURGER TOTANGO', price: '4.000' },
+                { name: 'ASSIETTE HAMBURGER', price: '5.000' },
+                { name: 'HAMBURGER POULET SIMPLE', price: '2.000' },
+                { name: 'HAMBURGER CHEESE POULET', price: '2.500' },
               ]},
               { title: 'ACCOMPAGNEMENTS', items: [
-                { name: 'FRITE', price: '1.500', description: '' },
-                { name: 'BANANE', price: '1.500', description: '' },
-                { name: 'BANANE VAPEUR', price: '2.000', description: '' },
-                { name: 'MANIOC', price: '500', description: '' },
-                { name: 'RIZ COMPOSÉ', price: '2.500', description: '' },
-                { name: 'RIZ BLANC', price: '1.000', description: '' },
-                { name: 'RIZ CANTONAIS', price: '3.000', description: '' },
-                { name: 'COUSCOUS', price: '2.000', description: '' },
-                { name: 'POMME DE TERRE SAUTÉE', price: '2.000', description: '' },
-                { name: 'PURÉE DE POMME DE TERRE', price: '2.000', description: '' },
-                { name: 'GOMBO SAUTÉ', price: '2.000', description: '' },
-                { name: 'ASSIETTE LÉGUMES VERTS', price: '2.000', description: '' },
-                { name: 'ASSIETTE LÉGUMES JARDINIERS', price: '2.500', description: '' },
-                { name: 'ASSIETTE CRÈME FRAÎCHE AU CHAMPIGNON', price: '3.000', description: '' },
-                { name: 'ASSIETTE CHAMPIGNON', price: '2.000', description: '' },
-                { name: 'SAUCE ITALIENNE (OSEILLE BIEN HACHÉE)', price: '1.500', description: '' },
+                { name: 'FRITE', price: '1.500' },
+                { name: 'BANANE', price: '1.500' },
+                { name: 'BANANE VAPEUR', price: '2.000' },
+                { name: 'MANIOC', price: '500' },
+                { name: 'RIZ COMPOSÉ', price: '2.500' },
+                { name: 'RIZ BLANC', price: '1.000' },
+                { name: 'RIZ CANTONAIS', price: '3.000' },
+                { name: 'COUSCOUS', price: '2.000' },
+                { name: 'POMME DE TERRE SAUTÉE', price: '2.000' },
+                { name: 'PURÉE DE POMME DE TERRE', price: '2.000' },
+                { name: 'GOMBO SAUTÉ', price: '2.000' },
+                { name: 'ASSIETTE LÉGUMES VERTS', price: '2.000' },
+                { name: 'ASSIETTE LÉGUMES JARDINIERS', price: '2.500' },
+                { name: 'ASSIETTE CRÈME FRAÎCHE', price: '3.000' },
+                { name: 'ASSIETTE CHAMPIGNON', price: '2.000' },
+                { name: 'SAUCE ITALIENNE', price: '1.500' },
               ]},
             ],
           },
@@ -887,83 +874,83 @@
             name: 'DRINKS I',
             sections: [
               { title: 'BOISSONS', items: [
-                { name: 'EAU P.M.', price: '500', description: '' },
-                { name: 'EAU G.M.', price: '1.000', description: '' },
-                { name: 'VERRE D\'EAU CHAUDE AU CITRON', price: '1.000', description: '' },
-                { name: 'SODA', price: '1.000', description: '' },
-                { name: 'COCA/SPRITE/FANTE EN BOÎTE', price: '1.000', description: '' },
-                { name: 'ORANGINA P.M.', price: '500', description: '' },
-                { name: 'ORANGINA G.M.', price: '1.000', description: '' },
-                { name: 'TONIC', price: '1.000', description: '' },
-                { name: 'TONIC SCHWEPPES', price: '1.500', description: '' },
-                { name: 'REDBULL', price: '2.000', description: '' },
-                { name: 'PERRIER', price: '2.000', description: '' },
+                { name: 'EAU P.M.', price: '500' },
+                { name: 'EAU G.M.', price: '1.000' },
+                { name: 'EAU CHAUDE CITRON', price: '1.000' },
+                { name: 'SODA', price: '1.000' },
+                { name: 'COCA/SPRITE/FANTE', price: '1.000' },
+                { name: 'ORANGINA P.M.', price: '500' },
+                { name: 'ORANGINA G.M.', price: '1.000' },
+                { name: 'TONIC', price: '1.000' },
+                { name: 'TONIC SCHWEPPES', price: '1.500' },
+                { name: 'REDBULL', price: '2.000' },
+                { name: 'PERRIER', price: '2.000' },
               ]},
               { title: 'JUS DE FRUITS', items: [
-                { name: 'JUS DE FRUITS P.M.', price: '1.000', description: '' },
-                { name: 'JUS DE FRUITS PERLA', price: '2.000', description: '' },
-                { name: 'JUS DE FRUITS CERES', price: '3.000', description: '' },
-                { name: 'JUS DE FRUITS RÉA', price: '2.500', description: '' },
-                { name: 'JUS FAIT MAISON ANANAS', price: '2.000', description: '' },
-                { name: 'JUS D\'ORANGE PRESSÉ', price: '2.000', description: '' },
+                { name: 'JUS P.M.', price: '1.000' },
+                { name: 'JUS PERLA', price: '2.000' },
+                { name: 'JUS CERES', price: '3.000' },
+                { name: 'JUS RÉA', price: '2.500' },
+                { name: 'JUS MAISON ANANAS', price: '2.000' },
+                { name: 'JUS D\'ORANGE PRESSÉ', price: '2.000' },
               ]},
               { title: 'COCKTAILS NON ALCOOLISÉS', items: [
-                { name: 'BORA-BORA', price: '3.500', description: 'Jus d\'ananas, jus d\'orange, sirop de fruit de la passion, sirop de grenadine' },
-                { name: 'BASSIN DU CONGO', price: '3.500', description: 'Jus d\'ananas, jus de mangue, jus de citron pressé, sirop de menthe' },
-                { name: 'BLUE HAWAÏ (VIRGIN)', price: '4.000', description: 'Jus d\'ananas, crème fraîche/lait, sirop de noix de coco, sirop bleu curacao, crème chantilly' },
-                { name: 'FRUIT PUNCH', price: '3.500', description: 'Jus d\'ananas, jus d\'orange, jus de mangue, sirop de fraise, jus de citron pressé, sirop de passion' },
-                { name: 'PÈRE NOËL', price: '3.500', description: 'Jus d\'ananas, jus d\'orange, citron pressé, sirop de grenadine, crème chantilly' },
-                { name: 'CIEL BLEU', price: '4.000', description: 'Jus d\'ananas, crème fraîche, sirop de curacao bleu, sirop de canne, crème chantilly' },
-                { name: 'CONGO COLOR', price: '3.500', description: 'Jus d\'orange, citron pressé, sirop bleu curacao, sirop de grenadine, sirop de menthe' },
-                { name: 'VIRGIN FRAISE COLADA', price: '4.000', description: 'Jus d\'ananas, crème fraîche, sirop de fraise, sirop de noix de coco, crème chantilly' },
-                { name: 'VIRGIN COLADA', price: '4.000', description: 'Jus d\'ananas, crème fraîche/lait, sirop de noix de coco, crème chantilly' },
-                { name: 'VIRGIN MOJITO CLASSIQUE', price: '3.500', description: 'Citron, menthe, sirop de canne, soda/Sprite/perrier' },
-                { name: 'VIRGIN MOJITO FRAISE', price: '3.500', description: 'Citron, menthe, sirop de fraise, soda/Sprite/perrier' },
-                { name: 'VIRGIN MOJITO PASSION', price: '3.500', description: 'Citron, feuilles de menthe, fruit de la passion, Sprite/jus d\'orange' },
-                { name: 'VIRGIN MOJITO FRAMBOISE', price: '3.500', description: 'Feuilles de menthe, citron, sirop de framboise, soda/Sprite/perrier' },
+                { name: 'BORA-BORA', price: '3.500' },
+                { name: 'BASSIN DU CONGO', price: '3.500' },
+                { name: 'BLUE HAWAÏ', price: '4.000' },
+                { name: 'FRUIT PUNCH', price: '3.500' },
+                { name: 'PÈRE NOËL', price: '3.500' },
+                { name: 'CIEL BLEU', price: '4.000' },
+                { name: 'CONGO COLOR', price: '3.500' },
+                { name: 'VIRGIN FRAISE COLADA', price: '4.000' },
+                { name: 'VIRGIN COLADA', price: '4.000' },
+                { name: 'VIRGIN MOJITO CLASSIQUE', price: '3.500' },
+                { name: 'VIRGIN MOJITO FRAISE', price: '3.500' },
+                { name: 'VIRGIN MOJITO PASSION', price: '3.500' },
+                { name: 'VIRGIN MOJITO FRAMBOISE', price: '3.500' },
               ]},
-              { title: 'SMOOTHIES & MILKSHAKES', items: [
-                { name: 'SMOOTHIE BANANE FRAISE', price: '4.000', description: '' },
-                { name: 'SMOOTHIE BANANE FRAMBOISE', price: '4.000', description: '' },
-                { name: 'SMOOTHIE BANANE MIEL', price: '4.000', description: '' },
-                { name: 'MILKSHAKE FRAISE/CHOCOLAT', price: '4.000', description: '' },
-                { name: 'MILKSHAKE OREO', price: '4.000', description: '' },
-                { name: 'MILKSHAKE KIT-KAT', price: '4.000', description: '' },
+              { title: 'SMOOTHIES & SHAKES', items: [
+                { name: 'SMOOTHIE BANANE FRAISE', price: '4.000' },
+                { name: 'SMOOTHIE BANANE FRAMBOISE', price: '4.000' },
+                { name: 'SMOOTHIE BANANE MIEL', price: '4.000' },
+                { name: 'MILKSHAKE FRAISE/CHOCOLAT', price: '4.000' },
+                { name: 'MILKSHAKE OREO', price: '4.000' },
+                { name: 'MILKSHAKE KIT-KAT', price: '4.000' },
               ]},
               { title: 'BOISSONS CHAUDES', items: [
-                { name: 'THÉ', price: '1.000', description: '' },
-                { name: 'THÉ À LA MENTHE', price: '1.000', description: '' },
-                { name: 'CAFÉ ESPRESSO', price: '1.500', description: '' },
-                { name: 'NESCAFÉ AU LAIT', price: '1.000', description: '' },
-                { name: 'CAPPUCCINO', price: '1.500', description: '' },
-                { name: 'CHOCOLAT CHAUD', price: '2.000', description: '' },
-                { name: 'GINGEMBRE + MIEL', price: '1.500', description: '' },
-                { name: 'GINGEMBRE CHAUD + MIEL', price: '2.000', description: '' },
-                { name: 'SIROP AU LAIT', price: '1.500', description: 'Grenadine - Fraise - Menthe - Framboise' },
-                { name: 'SALADE DE FRUITS EN POT', price: '1.000', description: '' },
-                { name: 'LIMONADE', price: '2.000', description: '' },
-                { name: 'SIROP À EAU (SAVEUR AU CHOIX)', price: '1.000', description: '' },
+                { name: 'THÉ', price: '1.000' },
+                { name: 'THÉ À LA MENTHE', price: '1.000' },
+                { name: 'CAFÉ ESPRESSO', price: '1.500' },
+                { name: 'NESCAFÉ AU LAIT', price: '1.000' },
+                { name: 'CAPPUCCINO', price: '1.500' },
+                { name: 'CHOCOLAT CHAUD', price: '2.000' },
+                { name: 'GINGEMBRE + MIEL', price: '1.500' },
+                { name: 'GINGEMBRE CHAUD + MIEL', price: '2.000' },
+                { name: 'SIROP AU LAIT', price: '1.500' },
+                { name: 'SALADE DE FRUITS', price: '1.000' },
+                { name: 'LIMONADE', price: '2.000' },
+                { name: 'SIROP À EAU', price: '1.000' },
               ]},
               { title: 'COCKTAILS ALCOOLISÉS', items: [
-                { name: 'MONACO', price: '4.000', description: 'Limonade, bière blonde, sirop de grenadine' },
-                { name: 'CUBA LIBRE', price: '4.500', description: 'Citron pressé, rhum blanc/ambre, coca-cola, sirop de canne' },
-                { name: 'PARADIS', price: '4.500', description: 'Jus d\'orange, citron pressé, rhum, sirop de grenadine, sirop de bleu curacao' },
-                { name: 'SCREAMING ORGANS', price: '5.000', description: 'Liqueur d\'amaretto, liqueur de café, Bailey\'s, vodka' },
-                { name: 'ANANAS ALCOOLISÉ', price: '5.000', description: 'Jus d\'ananas pressé, sirop de grenadine, vodka' },
-                { name: 'PINA COLADA', price: '5.000', description: 'Jus d\'ananas, crème fraîche/lait, sirop de noix de coco, rhum blanc, crème chantilly' },
-                { name: 'AFRO DYSIAQUE', price: '4.000', description: 'Jus de gingembre, citron pressé, miel, vodka, cola' },
-                { name: 'MARGARITA', price: '4.500', description: 'Tequila, Cointreau/Triple sec, citron pressé' },
-                { name: 'CAÏPIRINHA CLASSIQUE', price: '4.000', description: 'Cachaça/rhum, sirop de canne, citron pressé' },
-                { name: 'CAÏPA PASSION', price: '4.000', description: 'Cachaça/rhum, sirop de canne, citron pressé, sirop de passion' },
-                { name: 'BLUE LAGOON', price: '5.000', description: 'Vodka, citron pressé, sirop de bleu curacao, Sprite/soda' },
-                { name: 'TEQUILA SUNRISE', price: '4.500', description: 'Tequila, jus d\'orange, sirop de grenadine' },
-                { name: 'WHISKY SOUR', price: '4.500', description: 'Whisky, citron jaune, sirop de sucre, blanc d\'œuf, Angostura amer' },
-                { name: 'LONG ISLAND ICE', price: '5.000', description: 'Tequila, vodka, gin, rhum blanc, Sprite/Coca-Cola' },
-                { name: 'SEX ON THE BEACH', price: '5.000', description: 'Jus d\'orange, jus de framboise (cranberry), liqueur de pêche, vodka, grenadine' },
-                { name: 'DESPERITO', price: '5.000', description: 'Rhum, bière Desperados, jus de citron pressé, feuilles de menthe fraîche, sirop de canne' },
-                { name: 'BORA-BORA ALCOOLISÉ', price: '5.000', description: 'Jus d\'ananas, jus d\'orange, fruit de la passion, sirop de grenadine, rhum blanc' },
-                { name: 'COCKTAIL SIGNATURE', price: '5.000', description: 'Surprise du maître' },
-                { name: 'MOJITO ALCOOLÉ', price: '5.000', description: 'Citron, menthe, sirop de canne, soda/rhum' },
+                { name: 'MONACO', price: '4.000' },
+                { name: 'CUBA LIBRE', price: '4.500' },
+                { name: 'PARADIS', price: '4.500' },
+                { name: 'SCREAMING ORGANS', price: '5.000' },
+                { name: 'ANANAS ALCOOLISÉ', price: '5.000' },
+                { name: 'PINA COLADA', price: '5.000' },
+                { name: 'AFRO DYSIAQUE', price: '4.000' },
+                { name: 'MARGARITA', price: '4.500' },
+                { name: 'CAÏPIRINHA CLASSIQUE', price: '4.000' },
+                { name: 'CAÏPA PASSION', price: '4.000' },
+                { name: 'BLUE LAGOON', price: '5.000' },
+                { name: 'TEQUILA SUNRISE', price: '4.500' },
+                { name: 'WHISKY SOUR', price: '4.500' },
+                { name: 'LONG ISLAND ICE', price: '5.000' },
+                { name: 'SEX ON THE BEACH', price: '5.000' },
+                { name: 'DESPERITO', price: '5.000' },
+                { name: 'BORA-BORA ALCOOLISÉ', price: '5.000' },
+                { name: 'COCKTAIL SIGNATURE', price: '5.000' },
+                { name: 'MOJITO ALCOOLÉ', price: '5.000' },
               ]},
             ],
           },
@@ -971,96 +958,96 @@
             name: 'DRINKS II',
             sections: [
               { title: 'WHISKY', items: [
-                { name: 'SIREWARD\'S', price: '1.500 / 10.000', description: 'Verre / Bouteille' },
-                { name: 'VAT 69', price: '2.000 / 12.000', description: '' },
-                { name: 'PASSPORT', price: '2.000 / 12.000', description: '' },
-                { name: 'J&B', price: '2.000 / 13.000', description: '' },
-                { name: 'GRANT\'S', price: '2.000 / 13.000', description: '' },
-                { name: 'LABEL 5', price: '2.000 / 13.000', description: '' },
-                { name: 'RED LABEL', price: '2.500 / 15.000', description: '' },
-                { name: 'BALLANTINE\'S', price: '2.500 / 13.000', description: '' },
-                { name: 'BLACK LABEL', price: '3.500 / 30.000', description: '' },
-                { name: 'JACK DANIEL', price: '3.000 / 25.000', description: '' },
-                { name: 'JACK HONEY', price: '3.000 / 25.000', description: '' },
-                { name: 'DOUBLE BLACK', price: '4.000 / 40.000', description: '' },
-                { name: 'CHIVAS 12 ANS', price: '3.500 / 35.000', description: '' },
-                { name: 'CHIVAS 15 ANS', price: '5.500 / 55.000', description: '' },
-                { name: 'CHIVAS 18 ANS', price: '7.500 / 75.000', description: '' },
-                { name: 'GLENFIDDICH 12 ANS', price: '5.500 / 55.000', description: '' },
-                { name: 'GLENFIDDICH 15 ANS', price: '6.500 / 65.000', description: '' },
-                { name: 'GLENFIDDICH 18 ANS', price: '8.500 / 85.000', description: '' },
+                { name: 'SIREWARD\'S', price: '1.500 / 10.000' },
+                { name: 'VAT 69', price: '2.000 / 12.000' },
+                { name: 'PASSPORT', price: '2.000 / 12.000' },
+                { name: 'J&B', price: '2.000 / 13.000' },
+                { name: 'GRANT\'S', price: '2.000 / 13.000' },
+                { name: 'LABEL 5', price: '2.000 / 13.000' },
+                { name: 'RED LABEL', price: '2.500 / 15.000' },
+                { name: 'BALLANTINE\'S', price: '2.500 / 13.000' },
+                { name: 'BLACK LABEL', price: '3.500 / 30.000' },
+                { name: 'JACK DANIEL', price: '3.000 / 25.000' },
+                { name: 'JACK HONEY', price: '3.000 / 25.000' },
+                { name: 'DOUBLE BLACK', price: '4.000 / 40.000' },
+                { name: 'CHIVAS 12 ANS', price: '3.500 / 35.000' },
+                { name: 'CHIVAS 15 ANS', price: '5.500 / 55.000' },
+                { name: 'CHIVAS 18 ANS', price: '7.500 / 75.000' },
+                { name: 'GLENFIDDICH 12', price: '5.500 / 55.000' },
+                { name: 'GLENFIDDICH 15', price: '6.500 / 65.000' },
+                { name: 'GLENFIDDICH 18', price: '8.500 / 85.000' },
               ]},
               { title: 'GIN', items: [
-                { name: 'GORDON\'S', price: '2.000 / 15.000', description: '' },
-                { name: 'BOMBAY SAPPHIRE', price: '2.500 / 20.000', description: '' },
-                { name: 'HENDRICK\'S', price: '3.500 / 35.000', description: '' },
-                { name: 'PARROT (SIGNATURE)', price: '10.000', description: '' },
+                { name: 'GORDON\'S', price: '2.000 / 15.000' },
+                { name: 'BOMBAY SAPPHIRE', price: '2.500 / 20.000' },
+                { name: 'HENDRICK\'S', price: '3.500 / 35.000' },
+                { name: 'PARROT SIGNATURE', price: '10.000' },
               ]},
               { title: 'VODKA', items: [
-                { name: 'KIMPRINSKI', price: '1.500 / 10.000', description: '' },
-                { name: 'SMIRNOFF', price: '2.000 / 12.500', description: '' },
-                { name: 'SKY', price: '2.000 / 15.000', description: '' },
-                { name: 'ABSOLUT', price: '2.000 / 15.000', description: '' },
-                { name: 'ABSOLUT CITRON/VANILLE/FRAISE', price: '2.000 / 18.000', description: '' },
-                { name: 'GREY GOOSE', price: '3.000 / 30.000', description: '' },
-                { name: 'BELVEDERE', price: '3.500 / 35.000', description: '' },
+                { name: 'KIMPRINSKI', price: '1.500 / 10.000' },
+                { name: 'SMIRNOFF', price: '2.000 / 12.500' },
+                { name: 'SKY', price: '2.000 / 15.000' },
+                { name: 'ABSOLUT', price: '2.000 / 15.000' },
+                { name: 'ABSOLUT CITRON/VANILLE', price: '2.000 / 18.000' },
+                { name: 'GREY GOOSE', price: '3.000 / 30.000' },
+                { name: 'BELVEDERE', price: '3.500 / 35.000' },
               ]},
               { title: 'RHUM', items: [
-                { name: 'BACARDI BLANC, GOLD, NOIR', price: '2.000 / 15.000', description: '' },
-                { name: 'RICARD', price: '2.500 / 15.500', description: '' },
-                { name: 'SAINT JAMES', price: '2.500 / 15.000', description: '' },
+                { name: 'BACARDI BLANC/GOLD/NOIR', price: '2.000 / 15.000' },
+                { name: 'RICARD', price: '2.500 / 15.500' },
+                { name: 'SAINT JAMES', price: '2.500 / 15.000' },
               ]},
               { title: 'COGNAC', items: [
-                { name: 'CAMUS V.D.', price: '4.500 / 40.000', description: '' },
-                { name: 'HENESSY', price: '4.500 / 40.000', description: '' },
+                { name: 'CAMUS V.D.', price: '4.500 / 40.000' },
+                { name: 'HENESSY', price: '4.500 / 40.000' },
               ]},
               { title: 'LIQUEUR', items: [
-                { name: 'AMARULA', price: '2.500 / 16.000', description: '' },
-                { name: 'BAILEY\'S', price: '2.500 / 18.000', description: '' },
-                { name: 'CAMPARI', price: '2.500 / 15.000', description: '' },
-                { name: 'MARTINI BLANC/ROUGE', price: '2.000 / 15.000', description: '' },
-                { name: 'COINTREAU', price: '3.000 / 30.000', description: '' },
-                { name: 'GET 27/31', price: '2.500 / 25.000', description: '' },
-                { name: 'SHERIDAN\'S', price: '3.000 / 30.000', description: '' },
+                { name: 'AMARULA', price: '2.500 / 16.000' },
+                { name: 'BAILEY\'S', price: '2.500 / 18.000' },
+                { name: 'CAMPARI', price: '2.500 / 15.000' },
+                { name: 'MARTINI BLANC/ROUGE', price: '2.000 / 15.000' },
+                { name: 'COINTREAU', price: '3.000 / 30.000' },
+                { name: 'GET 27/31', price: '2.500 / 25.000' },
+                { name: 'SHERIDAN\'S', price: '3.000 / 30.000' },
               ]},
               { title: 'VINS BLANCS', items: [
-                { name: 'CHENET P.M.', price: '2.500', description: '' },
-                { name: 'MERLOT P.M.', price: '3.000', description: '' },
-                { name: 'BLANC MOELLEUX', price: '10.000', description: '' },
-                { name: 'BGC HARDONNAY', price: '12.000', description: '' },
-                { name: 'BGC SAUVIGNON', price: '12.000', description: '' },
-                { name: 'CHENET G.M.', price: '12.000', description: '' },
-                { name: 'MOUTON-CADET', price: '15.000', description: '' },
+                { name: 'CHENET P.M.', price: '2.500' },
+                { name: 'MERLOT P.M.', price: '3.000' },
+                { name: 'BLANC MOELLEUX', price: '10.000' },
+                { name: 'BGC HARDONNAY', price: '12.000' },
+                { name: 'BGC SAUVIGNON', price: '12.000' },
+                { name: 'CHENET G.M.', price: '12.000' },
+                { name: 'MOUTON-CADET', price: '15.000' },
               ]},
               { title: 'VINS ROSÉS', items: [
-                { name: 'CHENET P.M.', price: '2.500', description: '' },
-                { name: 'CÔTE DE PROVENCE', price: '12.000', description: '' },
-                { name: 'ROSE D\'ANJOU', price: '15.000', description: '' },
+                { name: 'CHENET P.M.', price: '2.500' },
+                { name: 'CÔTE DE PROVENCE', price: '12.000' },
+                { name: 'ROSE D\'ANJOU', price: '15.000' },
               ]},
               { title: 'VINS ROUGES', items: [
-                { name: 'CHENET P.M.', price: '2.500', description: '' },
-                { name: 'CAVALO P.M.', price: '2.500', description: '' },
-                { name: 'MERLOT P.M.', price: '3.000', description: '' },
-                { name: 'CHENET ICE P.M.', price: '4.000', description: '' },
-                { name: 'CHENET ICE GM ROSÉ', price: '13.000', description: '' },
-                { name: 'BORDEAUX', price: '12.000', description: '' },
-                { name: 'CH. VELAC', price: '10.000', description: '' },
-                { name: 'TERRE DE CRUS', price: '10.000', description: '' },
-                { name: 'ROCHE MAZET', price: '12.000', description: '' },
-                { name: 'CHENET G.M.', price: '12.000', description: '' },
-                { name: 'MOUTON-CADET', price: '15.000', description: '' },
-                { name: 'BGC CABERNET SAUVIGNON', price: '12.000', description: '' },
-                { name: 'BGC MERLOT', price: '12.000', description: '' },
-                { name: 'VIVE LA VIE ROUGE', price: '10.000', description: '' },
-                { name: 'VIVE LA VIE BLANC', price: '10.000', description: '' },
-                { name: 'VIVE LA VIE ROSÉ', price: '10.000', description: '' },
+                { name: 'CHENET P.M.', price: '2.500' },
+                { name: 'CAVALO P.M.', price: '2.500' },
+                { name: 'MERLOT P.M.', price: '3.000' },
+                { name: 'CHENET ICE P.M.', price: '4.000' },
+                { name: 'CHENET ICE GM ROSÉ', price: '13.000' },
+                { name: 'BORDEAUX', price: '12.000' },
+                { name: 'CH. VELAC', price: '10.000' },
+                { name: 'TERRE DE CRUS', price: '10.000' },
+                { name: 'ROCHE MAZET', price: '12.000' },
+                { name: 'CHENET G.M.', price: '12.000' },
+                { name: 'MOUTON-CADET', price: '15.000' },
+                { name: 'BGC CABERNET SAUVIGNON', price: '12.000' },
+                { name: 'BGC MERLOT', price: '12.000' },
+                { name: 'VIVE LA VIE ROUGE', price: '10.000' },
+                { name: 'VIVE LA VIE BLANC', price: '10.000' },
+                { name: 'VIVE LA VIE ROSÉ', price: '10.000' },
               ]},
               { title: 'CHAMPAGNE', items: [
-                { name: 'NICOLAS FEUILLATTE BRUT', price: '40.000', description: '' },
-                { name: 'NICOLAS FEUILLATTE ICE', price: '40.000', description: '' },
-                { name: 'ELEXIUM BRUT', price: '45.000', description: '' },
-                { name: 'MOËT BRUT', price: '55.000', description: '' },
-                { name: 'MOËT ICE', price: '70.000', description: '' },
+                { name: 'NICOLAS FEUILLATTE BRUT', price: '40.000' },
+                { name: 'NICOLAS FEUILLATTE ICE', price: '40.000' },
+                { name: 'ELEXIUM BRUT', price: '45.000' },
+                { name: 'MOËT BRUT', price: '55.000' },
+                { name: 'MOËT ICE', price: '70.000' },
               ]},
             ],
           },
