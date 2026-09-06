@@ -28,7 +28,7 @@
       font-family: 'Inter', sans-serif;
       background: var(--bg-card);
       color: var(--text);
-      min-height: 100vh;
+      height: 100vh;
       overflow: hidden;
     }
     
@@ -268,20 +268,14 @@
       padding: 0;
       background: #1a1a1a;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .page-scaler {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform-origin: 0 0;
-    }
-    
-    .page-inner {
-      position: relative;
-      width: 794px;
-      height: 1123px;
-      margin: 20px;
+      transform-origin: center center;
+      flex-shrink: 0;
     }
     
     /* ===== MENU PAGE - EXACT REPLICA ===== */
@@ -479,11 +473,7 @@
         padding: 0 !important;
       }
       .page-scaler {
-        position: relative !important;
         transform: none !important;
-      }
-      .page-inner {
-        margin: 0 !important;
       }
       .menu-page {
         box-shadow: none !important;
@@ -564,60 +554,58 @@
       
       <div class="preview-scroll" ref="scrollContainer">
         <div class="page-scaler" :style="{ transform: 'scale(' + pageScale + ')' }">
-          <div class="page-inner">
-            <div class="menu-page" :id="'menu-page-' + currentMenu">
-              <!-- Main Content -->
-              <div class="menu-content">
-                <!-- Left Column -->
-                <div class="menu-col">
-                  <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
-                    <div class="menu-section" v-if="section.title && section.items.length">
-                      <div class="menu-section-title">{{ section.title }}</div>
-                      <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                        <div class="menu-item-line">
-                          <span class="menu-item-name">{{ item.name }}</span>
-                          <span class="menu-item-price">{{ item.price }}</span>
-                        </div>
+          <div class="menu-page" :id="'menu-page-' + currentMenu">
+            <!-- Main Content -->
+            <div class="menu-content">
+              <!-- Left Column -->
+              <div class="menu-col">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
+                  <div class="menu-section" v-if="section.title && section.items.length">
+                    <div class="menu-section-title">{{ section.title }}</div>
+                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                      <div class="menu-item-line">
+                        <span class="menu-item-name">{{ item.name }}</span>
+                        <span class="menu-item-price">{{ item.price }}</span>
                       </div>
                     </div>
-                  </template>
-                </div>
-                
-                <!-- Middle Column -->
-                <div class="menu-col">
-                  <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
-                    <div class="menu-section" v-if="section.title && section.items.length">
-                      <div class="menu-section-title">{{ section.title }}</div>
-                      <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                        <div class="menu-item-line">
-                          <span class="menu-item-name">{{ item.name }}</span>
-                          <span class="menu-item-price">{{ item.price }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </template>
-                </div>
-                
-                <!-- Right Column (before logo) -->
-                <div class="menu-col">
-                  <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
-                    <div class="menu-section" v-if="section.title && section.items.length">
-                      <div class="menu-section-title">{{ section.title }}</div>
-                      <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                        <div class="menu-item-line">
-                          <span class="menu-item-name">{{ item.name }}</span>
-                          <span class="menu-item-price">{{ item.price }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </template>
-                </div>
+                  </div>
+                </template>
               </div>
               
-              <!-- Logo Sidebar -->
-              <div class="logo-sidebar">
-                <img src="logo.svg" alt="TOTANGO RESTAURANT" />
+              <!-- Middle Column -->
+              <div class="menu-col">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
+                  <div class="menu-section" v-if="section.title && section.items.length">
+                    <div class="menu-section-title">{{ section.title }}</div>
+                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                      <div class="menu-item-line">
+                        <span class="menu-item-name">{{ item.name }}</span>
+                        <span class="menu-item-price">{{ item.price }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </template>
               </div>
+              
+              <!-- Right Column (before logo) -->
+              <div class="menu-col">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
+                  <div class="menu-section" v-if="section.title && section.items.length">
+                    <div class="menu-section-title">{{ section.title }}</div>
+                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                      <div class="menu-item-line">
+                        <span class="menu-item-name">{{ item.name }}</span>
+                        <span class="menu-item-price">{{ item.price }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+            
+            <!-- Logo Sidebar -->
+            <div class="logo-sidebar">
+              <img src="logo.svg" alt="TOTANGO RESTAURANT" />
             </div>
           </div>
         </div>
@@ -683,8 +671,8 @@
           const rect = scrollContainer.value.getBoundingClientRect();
           const availW = rect.width - 40;  // 20px margin each side
           const availH = rect.height - 40;
-          const pageW = 794 + 40;  // page + margins
-          const pageH = 1123 + 40;
+          const pageW = 794;
+          const pageH = 1123;
           const scale = Math.min(availW / pageW, availH / pageH);
           pageScale.value = Math.min(scale, 1); // never scale up
         }
@@ -699,14 +687,27 @@
         });
         
         // Helper: build column layout from flat sections
+        // Distribute sections by item count for balanced columns
         function buildColumns(sections) {
           const cols = [[], [], []];
-          // Distribute sections across columns
-          const perCol = Math.ceil(sections.length / 3);
+          // Calculate total items per section
+          const sectionItems = sections.map(s => s.items.length);
+          const totalItems = sectionItems.reduce((a, b) => a + b, 0);
+          const targetPerCol = Math.ceil(totalItems / 3);
+          
+          let colIdx = 0;
+          let colItems = 0;
+          
           sections.forEach((sec, i) => {
-            const colIdx = Math.min(Math.floor(i / perCol), 2);
+            // If adding this section would exceed target and we have items, move to next col
+            if (colItems > 0 && colItems + sec.items.length > targetPerCol && colIdx < 2) {
+              colIdx++;
+              colItems = 0;
+            }
             cols[colIdx].push(sec);
+            colItems += sec.items.length;
           });
+          
           return cols;
         }
         
