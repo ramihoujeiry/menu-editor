@@ -686,13 +686,21 @@
           window.removeEventListener('resize', updateScale);
         });
         
-        // Helper: build column layout - distribute sections evenly
+        // Helper: build column layout - greedy balanced by item count
         function buildColumns(sections) {
           const cols = [[], [], []];
-          // Simple round-robin: 1st section -> col0, 2nd -> col1, 3rd -> col2, 4th -> col0, etc.
-          sections.forEach((sec, i) => {
-            cols[i % 3].push(sec);
+          const colItems = [0, 0, 0];
+          
+          // Sort sections by item count descending for better distribution
+          const sorted = [...sections].sort((a, b) => b.items.length - a.items.length);
+          
+          sorted.forEach(sec => {
+            // Find column with fewest items
+            const minCol = colItems.indexOf(Math.min(...colItems));
+            cols[minCol].push(sec);
+            colItems[minCol] += sec.items.length;
           });
+          
           return cols;
         }
         
