@@ -686,28 +686,13 @@
           window.removeEventListener('resize', updateScale);
         });
         
-        // Helper: build column layout from flat sections
-        // Distribute sections by item count for balanced columns
+        // Helper: build column layout - distribute sections evenly
         function buildColumns(sections) {
           const cols = [[], [], []];
-          // Calculate total items per section
-          const sectionItems = sections.map(s => s.items.length);
-          const totalItems = sectionItems.reduce((a, b) => a + b, 0);
-          const targetPerCol = Math.ceil(totalItems / 3);
-          
-          let colIdx = 0;
-          let colItems = 0;
-          
+          // Simple round-robin: 1st section -> col0, 2nd -> col1, 3rd -> col2, 4th -> col0, etc.
           sections.forEach((sec, i) => {
-            // If adding this section would exceed target and we have items, move to next col
-            if (colItems > 0 && colItems + sec.items.length > targetPerCol && colIdx < 2) {
-              colIdx++;
-              colItems = 0;
-            }
-            cols[colIdx].push(sec);
-            colItems += sec.items.length;
+            cols[i % 3].push(sec);
           });
-          
           return cols;
         }
         
