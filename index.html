@@ -365,9 +365,7 @@
     
     .menu-section-title {
       display: inline-block;
-      align-self: flex-start;
       flex-shrink: 0;
-      margin-bottom: 8px;
       background: #EEC01B;
       color: #111;
       font-size: 12px;
@@ -377,6 +375,15 @@
       padding: 5px 20px 5px 10px;
       clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 0 100%);
       font-family: 'Inter', sans-serif;
+    }
+    
+    .menu-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      align-self: stretch;
+      margin-bottom: 8px;
+      flex-shrink: 0;
     }
     
     /* ===== MENU ITEMS with dot leaders ===== */
@@ -756,7 +763,10 @@
               <div class="menu-col">
                 <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+section._si">
                   <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
-                    <div class="menu-section-title">{{ section.title }}</div>
+                    <div class="menu-section-head">
+                      <div class="menu-section-title">{{ section.title }}</div>
+                      <span class="pm-gm-pill" v-if="section.items.some(i => (i.price || '').includes('/'))">PM / GM</span>
+                    </div>
                     <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
                       <div class="menu-item-line">
                         <span class="menu-item-name">{{ item.name }}<span class="menu-item-name-inline" v-if="item.description && item.price.split('/').length === 2">({{ item.description }})</span></span>
@@ -773,7 +783,10 @@
               <div class="menu-col">
                 <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+section._si">
                   <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
-                    <div class="menu-section-title">{{ section.title }}</div>
+                    <div class="menu-section-head">
+                      <div class="menu-section-title">{{ section.title }}</div>
+                      <span class="pm-gm-pill" v-if="section.items.some(i => (i.price || '').includes('/'))">PM / GM</span>
+                    </div>
                     <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
                       <div class="menu-item-line">
                         <span class="menu-item-name">{{ item.name }}<span class="menu-item-name-inline" v-if="item.description && item.price.split('/').length === 2">({{ item.description }})</span></span>
@@ -789,7 +802,7 @@
               <!-- Branding panel -->
               <div class="brand-panel">
                 <div class="brand-top">
-                  <svg class="brand-crown" width="46" height="26" viewBox="-25 -16 50 24"><path d="M-22,7 L-22,-12 L-12,-3 L0,-16 L12,-3 L22,-12 L22,7 Z" fill="#EEC01B"/><circle cx="-22" cy="7" r="3.5" fill="#EEC01B"/><circle cx="0" cy="7" r="3.5" fill="#EEC01B"/><circle cx="22" cy="7" r="3.5" fill="#EEC01B"/><rect x="-25" y="7" width="50" height="5" rx="1.5" fill="#EEC01B"/></svg>
+                  <svg class="brand-crown" width="46" height="27" viewBox="-25 -17 50 29"><path d="M-22,7 L-22,-12 L-12,-3 L0,-16 L12,-3 L22,-12 L22,7 Z" fill="#EEC01B"/><circle cx="-22" cy="7" r="3.5" fill="#EEC01B"/><circle cx="0" cy="7" r="3.5" fill="#EEC01B"/><circle cx="22" cy="7" r="3.5" fill="#EEC01B"/><rect x="-25" y="7" width="50" height="5" rx="1.5" fill="#EEC01B"/></svg>
                   <div class="brand-circle-t">T</div>
                   <div class="brand-name">TOTANGO</div>
                   <div class="brand-sub">RESTAURANT</div>
