@@ -5,9 +5,10 @@
   "description": "TOTANGO RESTAURANT - Menu Editor",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port ${PORT:-3000}",
+    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview",
+    "start": "vite"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",
