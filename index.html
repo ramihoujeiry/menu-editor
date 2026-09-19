@@ -316,7 +316,11 @@
     .menu-page {
       width: 1123px;
       height: 794px;
-      background: #2f3336 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><g fill='%23ffffff' fill-opacity='0.035'><path d='M30 210 Q55 160 100 165 Q135 170 120 205 Q95 240 55 235 Q35 228 30 210 Z'/><path d='M230 60 Q265 40 295 55 Q300 80 270 95 Q235 105 220 85 Q215 70 230 60 Z'/><path d='M150 260 Q180 250 195 270 Q190 295 160 300 Q135 298 132 280 Q133 266 150 260 Z'/></g><g fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='1.6'><path d='M40 90 Q80 60 120 75 Q150 88 128 115 Q95 140 60 125 Q38 112 40 90 Z M45 95 Q85 80 124 108'/><path d='M210 170 Q250 150 280 170 Q285 195 255 205 Q222 210 208 192 Q202 180 210 170 Z M215 178 Q250 168 276 186'/><path d='M120 30 Q150 15 175 30 Q180 50 155 58 Q128 62 118 46 Q114 36 120 30 Z M126 34 Q148 26 170 42'/></g></svg>");
+      /* Authentic leaf texture from the original design, blended over the logo's
+         exact background color so the embedded logo rectangle is invisible */
+      background: #34383A url("bg-texture.png") repeat;
+      background-size: 270px 178px;
+      background-blend-mode: lighten;
       position: relative;
       overflow: hidden;
       border-radius: 18px;
@@ -333,7 +337,7 @@
       z-index: 5;
     }
     
-    /* Main content area: 2 menu columns + branding panel */
+    /* Main content area: 3 menu columns + branding panel */
     .menu-content {
       position: absolute;
       top: 32px;
@@ -341,8 +345,8 @@
       left: 32px;
       right: 32px;
       display: grid;
-      grid-template-columns: 30% 30.5% 1fr;
-      column-gap: 22px;
+      grid-template-columns: 27% 27% 27% 1fr;
+      column-gap: 20px;
       overflow: hidden;
     }
     
@@ -360,7 +364,8 @@
       flex-direction: column;
       justify-content: space-between;
       flex: 1 1 auto;
-      min-height: 0;
+      flex-shrink: 0; /* never compress below content — prevents banners overlapping items */
+      overflow: hidden;
     }
     
     .menu-section-title {
@@ -466,7 +471,7 @@
     }
     
     .brand-logo {
-      width: 210px;
+      width: 190px;
       height: auto;
       display: block;
       flex-shrink: 0;
@@ -689,9 +694,29 @@
                 </template>
               </div>
               
-              <!-- Right Column -->
+              <!-- Middle Column -->
               <div class="menu-col">
                 <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+section._si">
+                  <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
+                    <div class="menu-section-head">
+                      <div class="menu-section-title">{{ section.title }}</div>
+                      <span class="pm-gm-pill" v-if="section.items.some(i => (i.price || '').includes('/'))">PM / GM</span>
+                    </div>
+                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
+                      <div class="menu-item-line">
+                        <span class="menu-item-name">{{ item.name }}<span class="menu-item-name-inline" v-if="item.description && item.price.split('/').length === 2">({{ item.description }})</span></span>
+                        <span class="menu-item-dots"></span>
+                        <span class="menu-item-price">{{ item.price }}</span>
+                      </div>
+                      <div class="menu-item-desc" v-if="item.description && item.price.split('/').length === 1">{{ item.description }}</div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+              
+              <!-- Right Column -->
+              <div class="menu-col">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+section._si">
                   <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
                     <div class="menu-section-head">
                       <div class="menu-section-title">{{ section.title }}</div>
@@ -792,7 +817,7 @@
         const zoomMode = ref('fit');
         
         // Page constants (landscape A4)
-        const PAGE_W = 1123, PAGE_H = 794, COLS = 2;
+        const PAGE_W = 1123, PAGE_H = 794, COLS = 3;
         
         // Wrapper gets explicit scaled dimensions so scrollbars and centering work
         const zoomWrapStyle = computed(() => {
