@@ -6,9 +6,9 @@
   <title>TOTANGO RESTAURANT - Menu Editor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="/vendor/vue.global.prod.js"></script>
+  <script src="/vendor/html2canvas.min.js"></script>
+  <script src="/vendor/jspdf.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
@@ -366,6 +366,23 @@
       font-family: 'Inter', sans-serif;
     }
     
+    .menu-item-desc {
+      font-size: 8px;
+      font-weight: 300;
+      font-style: italic;
+      color: #ccc;
+      line-height: 1.25;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Extra section pills get distinct colours */
+    .menu-section-title.color-1 { background: #3FA9F5; color: #fff; }
+    .menu-section-title.color-2 { background: #6BCB77; color: #000; }
+    .menu-section-title.color-3 { background: #FF7BAC; color: #000; }
+    .menu-section-title.color-4 { background: #B983FF; color: #000; }
+    .menu-section-title.color-5 { background: #FF9F45; color: #000; }
+    .menu-section-title.color-6 { background: #7DE2D1; color: #000; }
+    
     /* ===== LOGO SIDEBAR ===== */
     .logo-sidebar {
       width: 160px;
@@ -521,7 +538,10 @@
         <div v-for="(section, sIdx) in menus[currentMenu].sections" :key="sIdx">
           <div class="section-header">
             <h3>{{ section.title }}</h3>
-            <button class="add-item-btn" @click="addItem(sIdx)">+ Item</button>
+            <div style="display:flex; gap:4px;">
+              <button class="add-item-btn" @click="addItem(sIdx)">+ Item</button>
+              <button class="delete-btn" @click="deleteSection(sIdx)" title="Delete section">🗑</button>
+            </div>
           </div>
           
           <div 
@@ -547,7 +567,9 @@
       <div class="preview-toolbar">
         <h2>{{ menus[currentMenu].name }}</h2>
         <div class="toolbar-actions">
+          <button class="btn btn-outline" @click="importJSON()">⬆ Import</button>
           <button class="btn btn-outline" @click="exportJSON()">Export JSON</button>
+          <button class="btn btn-outline" @click="resetDefaults()">Reset</button>
           <button class="btn btn-gold" @click="printPDF()">🖨 Print / Save PDF</button>
         </div>
       </div>
@@ -567,6 +589,7 @@
                         <span class="menu-item-name">{{ item.name }}</span>
                         <span class="menu-item-price">{{ item.price }}</span>
                       </div>
+                      <div class="menu-item-desc" v-if="item.description">{{ item.description }}</div>
                     </div>
                   </div>
                 </template>
@@ -582,6 +605,7 @@
                         <span class="menu-item-name">{{ item.name }}</span>
                         <span class="menu-item-price">{{ item.price }}</span>
                       </div>
+                      <div class="menu-item-desc" v-if="item.description">{{ item.description }}</div>
                     </div>
                   </div>
                 </template>
@@ -597,6 +621,7 @@
                         <span class="menu-item-name">{{ item.name }}</span>
                         <span class="menu-item-price">{{ item.price }}</span>
                       </div>
+                      <div class="menu-item-desc" v-if="item.description">{{ item.description }}</div>
                     </div>
                   </div>
                 </template>
@@ -605,7 +630,7 @@
             
             <!-- Logo Sidebar -->
             <div class="logo-sidebar">
-              <img src="logo.svg" alt="TOTANGO RESTAURANT" />
+              <img src="/logo.svg" alt="TOTANGO RESTAURANT" />
             </div>
           </div>
         </div>
@@ -635,22 +660,34 @@
         <h3>Add New Section</h3>
         <label>Section Title</label>
         <input v-model="newSectionTitle" placeholder="e.g. DESSERTS" @keyup.enter="confirmAddSection"/>
-        <label>Column</label>
-        <select v-model="newSectionColumn">
-          <option value="0">Left</option>
-          <option value="1">Middle</option>
-          <option value="2">Right</option>
-        </select>
+        <p style="font-size:10px; color:var(--text-dim); margin-top:8px;">
+          Sections are auto-balanced across the three columns.
+        </p>
         <div class="modal-actions">
           <button class="btn btn-outline" @click="showSectionModal = false">Cancel</button>
           <button class="btn btn-gold" @click="confirmAddSection">Add Section</button>
         </div>
       </div>
     </div>
+    
+    <input ref="hiddenFileInput" type="file" accept="application/json,.json" style="display:none" @change="onFileChosen" />
   </div>
 
   <script>
-    const { createApp, ref, computed, onMounted, onBeforeUnmount } = Vue;
+    const { createApp, ref, computed, watch, onMounted, onBeforeUnmount } = Vue;
+    
+    const STORAGE_KEY = 'totango-menu-editor-v1';
+    
+    function loadMenus() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch (e) { /* corrupted data — fall back to defaults */ }
+      return null;
+    }
     
     createApp({
       setup() {
@@ -658,10 +695,10 @@
         const sidebarHidden = ref(false);
         const showAddModal = ref(false);
         const showSectionModal = ref(false);
-        const addItemTarget = ref({ col: 0, sec: 0 });
+        const addItemTarget = ref({ sec: 0 });
         const newItem = ref({ name: '', price: '', description: '' });
         const newSectionTitle = ref('');
-        const newSectionColumn = ref('0');
+        const hiddenFileInput = ref(null);
         const pageScale = ref(1);
         const scrollContainer = ref(null);
         
@@ -704,8 +741,7 @@
           return cols;
         }
         
-        const menus = ref([
-          {
+        const DEFAULT_MENUS = [          {
             name: 'FOOD I',
             sections: [
               { title: 'OMELETTES', items: [
@@ -1033,9 +1069,18 @@
               ]},
             ],
           },
-        ]);
+        ];
         
-        // Add computed columns to each menu
+        const menus = ref(loadMenus() || DEFAULT_MENUS);
+        
+        // Debounced autosave to localStorage on any change
+        let saveTimer = null;
+        watch(menus, () => {
+          clearTimeout(saveTimer);
+          saveTimer = setTimeout(() => {
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(menus.value)); } catch (e) {}
+          }, 400);
+        }, { deep: true });
         const menusWithCols = computed(() => {
           return menus.value.map(m => ({
             ...m,
@@ -1044,7 +1089,7 @@
         });
         
         function addItem(sectionIdx) {
-          addItemTarget.value = { col: 0, sec: sectionIdx };
+          addItemTarget.value = { sec: sectionIdx };
           newItem.value = { name: '', price: '', description: '' };
           showAddModal.value = true;
         }
@@ -1063,9 +1108,14 @@
           menus.value[currentMenu.value].sections[sectionIdx].items.splice(itemIdx, 1);
         }
         
+        function deleteSection(sectionIdx) {
+          const sec = menus.value[currentMenu.value].sections[sectionIdx];
+          if (!confirm('Delete section "' + sec.title + '" and all its items?')) return;
+          menus.value[currentMenu.value].sections.splice(sectionIdx, 1);
+        }
+        
         function addSection() {
           newSectionTitle.value = '';
-          newSectionColumn.value = '0';
           showSectionModal.value = true;
         }
         
@@ -1076,6 +1126,34 @@
             items: []
           });
           showSectionModal.value = false;
+        }
+        
+        function importJSON() {
+          hiddenFileInput.value.click();
+        }
+        
+        function onFileChosen(event) {
+          const file = event.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const parsed = JSON.parse(reader.result);
+              if (!Array.isArray(parsed) || !parsed.length) throw new Error('bad shape');
+              menus.value = parsed;
+              currentMenu.value = 0;
+            } catch (e) {
+              alert('Invalid menu JSON file.');
+            }
+          };
+          reader.readAsText(file);
+          event.target.value = ''; // allow re-selecting the same file
+        }
+        
+        function resetDefaults() {
+          if (!confirm('Reset all menus to the factory defaults? Your current edits will be lost.')) return;
+          menus.value = JSON.parse(JSON.stringify(DEFAULT_MENUS));
+          currentMenu.value = 0;
         }
         
         function printPDF() {
@@ -1123,9 +1201,9 @@
         
         return {
           menus: menusWithCols, currentMenu, sidebarHidden, showAddModal, showSectionModal,
-          newItem, newSectionTitle, newSectionColumn,
-          addItem, confirmAddItem, deleteItem, addSection, confirmAddSection,
-          printPDF, exportJSON, pageScale, scrollContainer
+          newItem, newSectionTitle, hiddenFileInput, onFileChosen,
+          addItem, confirmAddItem, deleteItem, deleteSection, addSection, confirmAddSection,
+          importJSON, resetDefaults, printPDF, exportJSON, pageScale, scrollContainer
         };
       }
     }).mount('#app');
