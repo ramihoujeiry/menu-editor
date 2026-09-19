@@ -1,7 +1,7 @@
 # TOTANGO RESTAURANT — Menu Editor
 
 A single-page menu editor for the TOTANGO restaurant. Edit sections and items
-in the sidebar, see a live A4 preview with auto-balanced three-column layout,
+in the sidebar, see a live landscape-A4 preview with auto-balanced columns,
 and print or export the result.
 
 **Live site:** https://ramihoujeiry.github.io/menu-editor/
@@ -9,10 +9,14 @@ and print or export the result.
 ## Features
 
 - **Four menus**: FOOD I, FOOD II, DRINKS I, DRINKS II (fully editable)
-- **Live A4 preview** (794×1123) with sections auto-balanced across three
-  columns using real rendered heights, then justified to fill the page
-- **Full-height branded logo sidebar** on every printed page
-- **PDF export** via the Print / Save PDF button (html2canvas + jsPDF)
+- **Live landscape A4 preview** (1123×794) with sections auto-balanced across
+  three columns using real rendered heights, then justified to fill the page
+- **Restaurant design**: gold flag banners, dot leaders, PM/GM pills for
+  two-price sections, leaf-texture background, and the original logo artwork
+  embedded in the branding panel
+- **Zoom controls** (fit / ± / Ctrl+wheel) with a scrollable preview
+- **PDF export** via the Print / Save PDF button (html2canvas + jsPDF),
+  always captured at full size regardless of zoom
 - **JSON import / export** for backing up or moving menus between devices
 - **Autosave** to browser localStorage, with a Reset button for factory data
 - **Offline-capable**: Vue, html2canvas and jsPDF are vendored locally in
