@@ -264,18 +264,52 @@
     /* ===== MENU PAGE CONTAINER ===== */
     .preview-scroll {
       flex: 1;
-      overflow: hidden;
-      padding: 0;
+      overflow: auto;
+      padding: 24px;
       background: #1a1a1a;
       position: relative;
       display: flex;
-      align-items: center;
-      justify-content: center;
+    }
+    
+    .zoom-wrap {
+      margin: auto;
+      flex-shrink: 0;
     }
     
     .page-scaler {
-      transform-origin: center center;
+      transform-origin: top left;
       flex-shrink: 0;
+    }
+    
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      border: 1px solid var(--gold-dark);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    
+    .zoom-controls button {
+      background: transparent;
+      border: none;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 9px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    
+    .zoom-controls button:hover { background: var(--gold); color: #000; }
+    .zoom-controls button.active { background: var(--gold); color: #000; }
+    .zoom-controls .zoom-label {
+      color: var(--text-dim);
+      font-size: 11px;
+      padding: 0 4px;
+      min-width: 44px;
+      text-align: center;
     }
     
     /* ===== MENU PAGE - EXACT REPLICA ===== */
@@ -502,6 +536,11 @@
       .page-scaler {
         transform: none !important;
       }
+      .zoom-wrap {
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+      }
       .menu-page {
         box-shadow: none !important;
         margin: 0 !important;
@@ -577,6 +616,12 @@
       <div class="preview-toolbar">
         <h2>{{ menus[currentMenu].name }}</h2>
         <div class="toolbar-actions">
+          <div class="zoom-controls">
+            <button @click="zoomOut()" title="Zoom out">−</button>
+            <button @click="setZoom('fit')" :class="{ active: zoomMode === 'fit' }" title="Fit page">Fit</button>
+            <button @click="zoomIn()" title="Zoom in">+</button>
+            <span class="zoom-label">{{ Math.round(pageScale * 100) }}%</span>
+          </div>
           <button class="btn btn-outline" @click="importJSON()">⬆ Import</button>
           <button class="btn btn-outline" @click="exportJSON()">Export JSON</button>
           <button class="btn btn-outline" @click="resetDefaults()">Reset</button>
@@ -584,8 +629,9 @@
         </div>
       </div>
       
-      <div class="preview-scroll" ref="scrollContainer">
-        <div class="page-scaler" :style="{ transform: 'scale(' + pageScale + ')' }">
+      <div class="preview-scroll" ref="scrollContainer" @wheel="onWheel">
+        <div class="zoom-wrap" :style="zoomWrapStyle">
+          <div class="page-scaler" :style="{ transform: 'scale(' + pageScale + ')' }">
           <div class="menu-page" :id="'menu-page-' + currentMenu">
             <!-- Main Content -->
             <div class="menu-content">
@@ -642,6 +688,7 @@
             <div class="logo-sidebar">
               <img src="logo.svg" alt="TOTANGO RESTAURANT" />
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -711,17 +758,58 @@
         const hiddenFileInput = ref(null);
         const pageScale = ref(1);
         const scrollContainer = ref(null);
+        const zoomMode = ref('fit');
         
-        // Dynamic scaling to fit page in viewport
-        function updateScale() {
+        // Wrapper gets explicit scaled dimensions so scrollbars and centering work
+        const zoomWrapStyle = computed(() => {
+          const w = Math.round(794 * pageScale.value);
+          const h = Math.round(1123 * pageScale.value);
+          return { width: w + 'px', height: h + 'px' };
+        });
+        
+        // 'fit' derives scale from the viewport; explicit keeps the user's zoom
+        function applyScale() {
           if (!scrollContainer.value) return;
+          if (zoomMode.value !== 'fit') return;
           const rect = scrollContainer.value.getBoundingClientRect();
-          const availW = rect.width - 40;  // 20px margin each side
-          const availH = rect.height - 40;
-          const pageW = 794;
-          const pageH = 1123;
-          const scale = Math.min(availW / pageW, availH / pageH);
-          pageScale.value = Math.min(scale, 1); // never scale up
+          const scale = Math.min((rect.width - 48) / 794, (rect.height - 48) / 1123);
+          pageScale.value = Math.max(0.15, Math.min(scale, 1));
+        }
+        
+        function updateScale() { applyScale(); }
+        
+        function setZoom(mode) {
+          if (mode === 'fit') {
+            zoomMode.value = 'fit';
+            applyScale();
+            return;
+          }
+          zoomMode.value = 'explicit';
+          const factor = mode === 'in' ? 1.25 : 0.8;
+          pageScale.value = Math.max(0.15, Math.min(2, pageScale.value * factor));
+        }
+        
+        function zoomIn() { setZoom('in'); }
+        function zoomOut() { setZoom('out'); }
+        
+        function onWheel(e) {
+          // only intercept Ctrl/Cmd + wheel (pinch on trackpads); normal scroll untouched
+          if (!(e.ctrlKey || e.metaKey)) return;
+          e.preventDefault();
+          const el = scrollContainer.value;
+          const rect = el.getBoundingClientRect();
+          const px = e.clientX - rect.left;
+          const py = e.clientY - rect.top;
+          const contentX = px + el.scrollLeft;
+          const contentY = py + el.scrollTop;
+          const prev = pageScale.value;
+          zoomMode.value = 'explicit';
+          pageScale.value = Math.max(0.15, Math.min(2, prev * (e.deltaY < 0 ? 1.12 : 1 / 1.12)));
+          const next = pageScale.value;
+          nextTick(() => {
+            el.scrollLeft = (contentX / prev) * next - px;
+            el.scrollTop = (contentY / prev) * next - py;
+          });
         }
         
         onMounted(() => {
@@ -1205,17 +1293,24 @@
           currentMenu.value = 0;
         }
         
-        function printPDF() {
+        async function printPDF() {
           const menuPage = document.querySelector('.menu-page');
           if (!menuPage) return;
           
-          // Use html2canvas to capture the menu with correct background
-          html2canvas(menuPage, {
-            backgroundColor: '#34383A',
-            scale: 2,
-            useCORS: true,
-            logging: false
-          }).then(canvas => {
+          // Capture at identity scale so the PDF is always full-size
+          const prevScale = pageScale.value;
+          const prevMode = zoomMode.value;
+          pageScale.value = 1;
+          await nextTick();
+          
+          try {
+            // Use html2canvas to capture the menu with correct background
+            const canvas = await html2canvas(menuPage, {
+              backgroundColor: '#34383A',
+              scale: 2,
+              useCORS: true,
+              logging: false
+            });
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
@@ -1235,7 +1330,10 @@
             }
             
             pdf.save('TOTANGO-Menu.pdf');
-          });
+          } finally {
+            pageScale.value = prevScale;
+            zoomMode.value = prevMode;
+          }
         }
         
         function exportJSON() {
@@ -1252,7 +1350,8 @@
           menus: menusWithCols, currentMenu, sidebarHidden, showAddModal, showSectionModal,
           newItem, newSectionTitle, hiddenFileInput, onFileChosen,
           addItem, confirmAddItem, deleteItem, deleteSection, addSection, confirmAddSection,
-          importJSON, resetDefaults, printPDF, exportJSON, pageScale, scrollContainer
+          importJSON, resetDefaults, printPDF, exportJSON,
+          pageScale, zoomMode, zoomWrapStyle, setZoom, zoomIn, zoomOut, onWheel, scrollContainer
         };
       }
     }).mount('#app');
