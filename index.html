@@ -306,8 +306,8 @@
       flex: 1;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 0 15px;
-      padding: 20px 15px 20px 20px;
+      gap: 0 18px;
+      padding: 30px 16px 26px 24px;
       height: 1123px;
       margin-right: 160px;
       overflow: hidden;
@@ -316,30 +316,39 @@
     .menu-col {
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
     }
     
     /* ===== SECTION HEADERS ===== */
     .menu-section {
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     
     .menu-section-title {
       display: inline-block;
+      align-self: flex-start;
+      flex-shrink: 0;
+      margin-bottom: 6px;
       background: #EEC01B;
       color: #000;
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      padding: 3px 10px;
+      padding: 4px 12px;
       border-radius: 12px;
-      margin-bottom: 4px;
       font-family: 'Inter', sans-serif;
     }
     
     /* ===== MENU ITEMS ===== */
     .menu-item {
-      padding: 1px 0;
+      padding: 5px 0;
+      flex-shrink: 0;
     }
     
     .menu-item-line {
@@ -349,29 +358,30 @@
     }
     
     .menu-item-name {
-      font-size: 10px;
+      font-size: 13px;
       font-weight: 400;
       color: #fff;
-      line-height: 1.2;
+      line-height: 1.45;
       font-family: 'Inter', sans-serif;
       flex: 1;
     }
     
     .menu-item-price {
-      font-size: 10px;
+      font-size: 13px;
       font-weight: 400;
       color: #fff;
       white-space: nowrap;
-      margin-left: 6px;
+      margin-left: 8px;
       font-family: 'Inter', sans-serif;
     }
     
     .menu-item-desc {
-      font-size: 8px;
+      font-size: 10px;
       font-weight: 300;
       font-style: italic;
       color: #ccc;
-      line-height: 1.25;
+      line-height: 1.35;
+      margin-top: 1px;
       font-family: 'Inter', sans-serif;
     }
     
@@ -390,7 +400,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 10px 5px;
+      padding: 0;
       border-left: 1px solid #444;
       position: absolute;
       right: 0;
@@ -581,8 +591,8 @@
             <div class="menu-content">
               <!-- Left Column -->
               <div class="menu-col">
-                <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+sIdx">
-                  <div class="menu-section" v-if="section.title && section.items.length">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+section._si">
+                  <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
                     <div class="menu-section-title">{{ section.title }}</div>
                     <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
                       <div class="menu-item-line">
@@ -597,8 +607,8 @@
               
               <!-- Middle Column -->
               <div class="menu-col">
-                <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+sIdx">
-                  <div class="menu-section" v-if="section.title && section.items.length">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+section._si">
+                  <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
                     <div class="menu-section-title">{{ section.title }}</div>
                     <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
                       <div class="menu-item-line">
@@ -613,8 +623,8 @@
               
               <!-- Right Column (before logo) -->
               <div class="menu-col">
-                <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+sIdx">
-                  <div class="menu-section" v-if="section.title && section.items.length">
+                <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+section._si">
+                  <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
                     <div class="menu-section-title">{{ section.title }}</div>
                     <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
                       <div class="menu-item-line">
@@ -674,7 +684,7 @@
   </div>
 
   <script>
-    const { createApp, ref, computed, watch, onMounted, onBeforeUnmount } = Vue;
+    const { createApp, ref, computed, watch, nextTick, onMounted, onBeforeUnmount } = Vue;
     
     const STORAGE_KEY = 'totango-menu-editor-v1';
     
@@ -716,6 +726,7 @@
         
         onMounted(() => {
           updateScale();
+          remeasureSections();
           window.addEventListener('resize', updateScale);
         });
         
@@ -728,14 +739,15 @@
           const cols = [[], [], []];
           const colItems = [0, 0, 0];
           
-          // Sort sections by item count descending for better distribution
-          const sorted = [...sections].sort((a, b) => b.items.length - a.items.length);
+          // Weight each section by item count + fixed overhead (pill + margins)
+          // so columns end up visually even, not just numerically
+          const weight = sec => sec.items.length + 2;
+          const sorted = [...sections].sort((a, b) => weight(b) - weight(a));
           
           sorted.forEach(sec => {
-            // Find column with fewest items
             const minCol = colItems.indexOf(Math.min(...colItems));
             cols[minCol].push(sec);
-            colItems[minCol] += sec.items.length;
+            colItems[minCol] += weight(sec);
           });
           
           return cols;
@@ -1076,16 +1088,51 @@
         // Debounced autosave to localStorage on any change
         let saveTimer = null;
         watch(menus, () => {
+          remeasureSections();
           clearTimeout(saveTimer);
           saveTimer = setTimeout(() => {
             try { localStorage.setItem(STORAGE_KEY, JSON.stringify(menus.value)); } catch (e) {}
           }, 400);
         }, { deep: true });
+        // Measured rendered heights (px) per section, keyed "menuIdx:secIdx".
+        // Item-count weighting can't see text wrapping, so we measure the real
+        // DOM heights and rebalance columns with actual pixel heights.
+        const measuredHeights = ref({});
+        
+        async function remeasureSections() {
+          await nextTick();
+          document.querySelectorAll('.menu-section[data-menu]').forEach(el => {
+            const key = el.dataset.menu + ':' + el.dataset.sec;
+            const h = el.offsetHeight;
+            if (h > 0) measuredHeights.value[key] = h;
+          });
+        }
+        
+        // Greedy column balancing using real rendered heights when available,
+        // falling back to item-count weights for never-rendered menus
         const menusWithCols = computed(() => {
-          return menus.value.map(m => ({
-            ...m,
-            columns: buildColumns(m.sections)
-          }));
+          return menus.value.map((m, mi) => {
+            const heights = m.sections.map((s, si) => measuredHeights.value[mi + ':' + si] || null);
+            const useMeasured = heights.some(h => h != null);
+            
+            let cols;
+            if (useMeasured) {
+              const sums = [0, 0, 0];
+              cols = [[], [], []];
+              m.sections.map((s, si) => si)
+                .sort((a, b) => (heights[b] || 0) - (heights[a] || 0))
+                .forEach(si => {
+                  const c = sums.indexOf(Math.min(...sums));
+                  cols[c].push(Object.assign({}, m.sections[si], { _si: si }));
+                  sums[c] += heights[si] || 0;
+                });
+            } else {
+              cols = buildColumns(m.sections).map(col =>
+                col.map(sec => Object.assign({}, sec, { _si: m.sections.indexOf(sec) })));
+            }
+            
+            return { ...m, columns: cols };
+          });
         });
         
         function addItem(sectionIdx) {
@@ -1141,6 +1188,7 @@
               const parsed = JSON.parse(reader.result);
               if (!Array.isArray(parsed) || !parsed.length) throw new Error('bad shape');
               menus.value = parsed;
+              measuredHeights.value = {};
               currentMenu.value = 0;
             } catch (e) {
               alert('Invalid menu JSON file.');
@@ -1153,6 +1201,7 @@
         function resetDefaults() {
           if (!confirm('Reset all menus to the factory defaults? Your current edits will be lost.')) return;
           menus.value = JSON.parse(JSON.stringify(DEFAULT_MENUS));
+          measuredHeights.value = {};
           currentMenu.value = 0;
         }
         
