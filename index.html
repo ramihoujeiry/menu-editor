@@ -312,38 +312,37 @@
       text-align: center;
     }
     
-    /* ===== MENU PAGE - EXACT REPLICA ===== */
+    /* ===== MENU PAGE - LANDSCAPE A4 (restaurant reference style) ===== */
     .menu-page {
-      width: 794px;
-      height: 1123px;
-      background: #34383A;
+      width: 1123px;
+      height: 794px;
+      background: #2f3336 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><g fill='none' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.6'><path d='M20 200 Q40 150 30 110 Q70 130 60 180 Q45 205 20 200Z'/><path d='M150 40 Q190 30 210 60 Q180 80 150 70 Q135 55 150 40Z'/><path d='M60 40 Q90 20 110 40 Q100 70 70 75 Q50 60 60 40Z'/><path d='M180 180 Q210 170 225 195 Q205 215 180 210 Q165 195 180 180Z'/><path d='M120 120 Q150 110 165 135 Q145 155 120 150 Q105 135 120 120Z'/></g></svg>");
       position: relative;
       overflow: hidden;
-      display: flex;
+      border-radius: 18px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.6);
     }
     
-    /* Gold border at top */
-    .menu-page::before {
-      content: '';
+    /* Rounded gold inner frame */
+    .menu-frame {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: #EEC01B;
-      z-index: 10;
+      inset: 14px;
+      border: 1px solid rgba(238, 192, 27, 0.4);
+      border-radius: 12px;
+      pointer-events: none;
+      z-index: 5;
     }
     
-    /* Main content area */
+    /* Main content area: 2 menu columns + branding panel */
     .menu-content {
-      flex: 1;
+      position: absolute;
+      top: 32px;
+      bottom: 32px;
+      left: 32px;
+      right: 32px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0 18px;
-      padding: 30px 16px 26px 24px;
-      height: 1123px;
-      margin-right: 160px;
+      grid-template-columns: 30% 30.5% 1fr;
+      column-gap: 22px;
       overflow: hidden;
     }
     
@@ -351,11 +350,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      min-height: 0;
     }
     
-    /* ===== SECTION HEADERS ===== */
+    /* ===== SECTION HEADERS - gold flag banners ===== */
     .menu-section {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -367,90 +367,196 @@
       display: inline-block;
       align-self: flex-start;
       flex-shrink: 0;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       background: #EEC01B;
-      color: #000;
-      font-size: 11px;
+      color: #111;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 12px;
+      padding: 5px 20px 5px 10px;
+      clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 0 100%);
       font-family: 'Inter', sans-serif;
     }
     
-    /* ===== MENU ITEMS ===== */
+    /* ===== MENU ITEMS with dot leaders ===== */
     .menu-item {
-      padding: 5px 0;
+      padding: 1.5px 0;
       flex-shrink: 0;
     }
     
     .menu-item-line {
       display: flex;
-      justify-content: space-between;
       align-items: baseline;
     }
     
     .menu-item-name {
-      font-size: 13px;
-      font-weight: 400;
+      font-size: 10.5px;
+      font-weight: 700;
       color: #fff;
-      line-height: 1.45;
+      line-height: 1.4;
       font-family: 'Inter', sans-serif;
+      flex-shrink: 0;
+      max-width: 74%;
+    }
+    
+    .menu-item-dots {
       flex: 1;
+      border-bottom: 1.5px dotted rgba(255,255,255,0.55);
+      margin: 0 5px;
+      transform: translateY(-3px);
+      min-width: 10px;
     }
     
     .menu-item-price {
-      font-size: 13px;
+      font-size: 10.5px;
       font-weight: 400;
       color: #fff;
       white-space: nowrap;
-      margin-left: 8px;
       font-family: 'Inter', sans-serif;
     }
     
     .menu-item-desc {
-      font-size: 10px;
-      font-weight: 300;
-      font-style: italic;
-      color: #ccc;
-      line-height: 1.35;
-      margin-top: 1px;
+      font-size: 7.5px;
+      font-weight: 400;
+      font-style: normal;
+      color: #f0c94a;
+      line-height: 1.3;
+      max-width: 90%;
       font-family: 'Inter', sans-serif;
     }
     
-    /* Extra section pills get distinct colours */
-    .menu-section-title.color-1 { background: #3FA9F5; color: #fff; }
-    .menu-section-title.color-2 { background: #6BCB77; color: #000; }
-    .menu-section-title.color-3 { background: #FF7BAC; color: #000; }
-    .menu-section-title.color-4 { background: #B983FF; color: #000; }
-    .menu-section-title.color-5 { background: #FF9F45; color: #000; }
-    .menu-section-title.color-6 { background: #7DE2D1; color: #000; }
+    .menu-item-name-inline {
+      color: #f0c94a;
+      font-size: 7.5px;
+      font-weight: 400;
+      font-style: normal;
+      margin-left: 5px;
+      font-family: 'Inter', sans-serif;
+    }
     
-    /* ===== LOGO SIDEBAR ===== */
-    .logo-sidebar {
-      width: 160px;
-      background: #34383A;
+    /* PM / GM pill for two-price items */
+    .pm-gm-pill {
+      display: inline-block;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 1px 8px;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+    
+    /* ===== BRANDING PANEL (right column) ===== */
+    .brand-panel {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0;
-      border-left: 1px solid #444;
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      overflow: hidden;
-      justify-content: flex-start;
+      justify-content: space-between;
+      min-height: 0;
+      padding: 4px 0;
     }
     
-    .logo-sidebar img {
-      width: 100%;
-      height: auto;
-      display: block;
-      max-height: 100%;
-      object-fit: contain;
+    .brand-top {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+    
+    .brand-circle-t {
+      width: 56px;
+      height: 56px;
+      border: 2px solid #EEC01B;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Georgia, serif;
+      font-size: 32px;
+      font-weight: bold;
+      color: #EEC01B;
+    }
+    
+    .brand-name {
+      font-family: Georgia, serif;
+      font-size: 30px;
+      color: #EEC01B;
+      letter-spacing: 4px;
+      margin-top: 6px;
+    }
+    
+    .brand-sub {
+      font-size: 10px;
+      color: #EEC01B;
+      letter-spacing: 6px;
+      margin-top: 2px;
+    }
+    
+    .brand-rule {
+      width: 130px;
+      border-top: 1px solid #EEC01B;
+      margin: 7px 0 0;
+    }
+    
+    .brand-tel {
+      font-size: 10px;
+      color: #EEC01B;
+      margin-top: 6px;
+    }
+    
+    .brand-badge {
+      width: 185px;
+      height: 185px;
+      border-radius: 50%;
+      background: #EEC01B;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 12px 0;
+      flex-shrink: 0;
+    }
+    
+    .brand-badge .badge-text {
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      line-height: 1;
+    }
+    
+    .brand-badge .badge-line {
+      width: 84px;
+      border-top: 2px solid #1a1a1a;
+      margin-top: 10px;
+    }
+    
+    .brand-badge .badge-dots {
+      display: flex;
+      gap: 26px;
+      margin-top: 5px;
+    }
+    
+    .brand-badge .badge-dots span {
+      width: 5px;
+      height: 5px;
+      background: #1a1a1a;
+      border-radius: 50%;
+    }
+    
+    .brand-reserve {
+      text-align: center;
+      color: #fff;
+      font-size: 10.5px;
+      line-height: 1.75;
+      padding-bottom: 2px;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .brand-reserve .res-gold { color: #EEC01B; }
     
     /* ===== MODAL ===== */
     .modal-overlay {
@@ -513,23 +619,23 @@
     /* ===== PRINT ===== */
     @media print {
       @page {
-        size: A4;
+        size: A4 landscape;
         margin: 0 !important;
       }
       body {
-        background: #34383A !important;
+        background: #2f3336 !important;
         margin: 0 !important;
         padding: 0 !important;
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1123px !important;
+        height: 794px !important;
       }
       .sidebar, .preview-toolbar, .sidebar-toggle, .preview-scroll { display: none !important; }
       .preview-container {
         display: block !important;
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1123px !important;
+        height: 794px !important;
         overflow: hidden !important;
-        background: #34383A !important;
+        background: #2f3336 !important;
         margin: 0 !important;
         padding: 0 !important;
       }
@@ -544,8 +650,8 @@
       .menu-page {
         box-shadow: none !important;
         margin: 0 !important;
-        width: 794px !important;
-        height: 1123px !important;
+        width: 1123px !important;
+        height: 794px !important;
       }
       * {
         -webkit-print-color-adjust: exact !important;
@@ -633,7 +739,8 @@
         <div class="zoom-wrap" :style="zoomWrapStyle">
           <div class="page-scaler" :style="{ transform: 'scale(' + pageScale + ')' }">
           <div class="menu-page" :id="'menu-page-' + currentMenu">
-            <!-- Main Content -->
+            <div class="menu-frame"></div>
+            <!-- Main Content: 2 menu columns + branding panel -->
             <div class="menu-content">
               <!-- Left Column -->
               <div class="menu-col">
@@ -642,51 +749,53 @@
                     <div class="menu-section-title">{{ section.title }}</div>
                     <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
                       <div class="menu-item-line">
-                        <span class="menu-item-name">{{ item.name }}</span>
+                        <span class="menu-item-name">{{ item.name }}<span class="menu-item-name-inline" v-if="item.description && item.price.split('/').length === 2">({{ item.description }})</span></span>
+                        <span class="menu-item-dots"></span>
                         <span class="menu-item-price">{{ item.price }}</span>
                       </div>
-                      <div class="menu-item-desc" v-if="item.description">{{ item.description }}</div>
+                      <div class="menu-item-desc" v-if="item.description && item.price.split('/').length === 1">{{ item.description }}</div>
                     </div>
                   </div>
                 </template>
               </div>
               
-              <!-- Middle Column -->
+              <!-- Right Column -->
               <div class="menu-col">
                 <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+section._si">
                   <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
                     <div class="menu-section-title">{{ section.title }}</div>
                     <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
                       <div class="menu-item-line">
-                        <span class="menu-item-name">{{ item.name }}</span>
+                        <span class="menu-item-name">{{ item.name }}<span class="menu-item-name-inline" v-if="item.description && item.price.split('/').length === 2">({{ item.description }})</span></span>
+                        <span class="menu-item-dots"></span>
                         <span class="menu-item-price">{{ item.price }}</span>
                       </div>
-                      <div class="menu-item-desc" v-if="item.description">{{ item.description }}</div>
+                      <div class="menu-item-desc" v-if="item.description && item.price.split('/').length === 1">{{ item.description }}</div>
                     </div>
                   </div>
                 </template>
               </div>
               
-              <!-- Right Column (before logo) -->
-              <div class="menu-col">
-                <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+section._si">
-                  <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
-                    <div class="menu-section-title">{{ section.title }}</div>
-                    <div v-for="(item, iIdx) in section.items" :key="iIdx" class="menu-item">
-                      <div class="menu-item-line">
-                        <span class="menu-item-name">{{ item.name }}</span>
-                        <span class="menu-item-price">{{ item.price }}</span>
-                      </div>
-                      <div class="menu-item-desc" v-if="item.description">{{ item.description }}</div>
-                    </div>
-                  </div>
-                </template>
+              <!-- Branding panel -->
+              <div class="brand-panel">
+                <div class="brand-top">
+                  <div class="brand-circle-t">T</div>
+                  <div class="brand-name">TOTANGO</div>
+                  <div class="brand-sub">RESTAURANT</div>
+                  <hr class="brand-rule" />
+                  <div class="brand-tel">Tel : 06 834 16 68 / 05 064 31 31</div>
+                </div>
+                <div class="brand-badge">
+                  <div class="badge-text">MENU</div>
+                  <div class="badge-line"></div>
+                  <div class="badge-dots"><span></span><span></span><span></span></div>
+                </div>
+                <div class="brand-reserve">
+                  <span class="res-gold">RÉSERVATION ANNIVERSAIRE</span><br/>
+                  500 FCFA / personne — du lundi au vendredi<br/>
+                  <span style="font-size: 9px;">Reservations anniversaires non disponibles le week end</span>
+                </div>
               </div>
-            </div>
-            
-            <!-- Logo Sidebar -->
-            <div class="logo-sidebar">
-              <img src="logo.svg" alt="TOTANGO RESTAURANT" />
             </div>
           </div>
           </div>
@@ -760,10 +869,13 @@
         const scrollContainer = ref(null);
         const zoomMode = ref('fit');
         
+        // Page constants (landscape A4)
+        const PAGE_W = 1123, PAGE_H = 794, COLS = 2;
+        
         // Wrapper gets explicit scaled dimensions so scrollbars and centering work
         const zoomWrapStyle = computed(() => {
-          const w = Math.round(794 * pageScale.value);
-          const h = Math.round(1123 * pageScale.value);
+          const w = Math.round(PAGE_W * pageScale.value);
+          const h = Math.round(PAGE_H * pageScale.value);
           return { width: w + 'px', height: h + 'px' };
         });
         
@@ -772,7 +884,7 @@
           if (!scrollContainer.value) return;
           if (zoomMode.value !== 'fit') return;
           const rect = scrollContainer.value.getBoundingClientRect();
-          const scale = Math.min((rect.width - 48) / 794, (rect.height - 48) / 1123);
+          const scale = Math.min((rect.width - 48) / PAGE_W, (rect.height - 48) / PAGE_H);
           pageScale.value = Math.max(0.15, Math.min(scale, 1));
         }
         
@@ -824,10 +936,10 @@
         
         // Helper: build column layout - greedy balanced by item count
         function buildColumns(sections) {
-          const cols = [[], [], []];
-          const colItems = [0, 0, 0];
+          const cols = Array.from({ length: COLS }, () => []);
+          const colItems = new Array(COLS).fill(0);
           
-          // Weight each section by item count + fixed overhead (pill + margins)
+          // Weight each section by item count + fixed overhead (banner + margins)
           // so columns end up visually even, not just numerically
           const weight = sec => sec.items.length + 2;
           const sorted = [...sections].sort((a, b) => weight(b) - weight(a));
@@ -1205,8 +1317,8 @@
             
             let cols;
             if (useMeasured) {
-              const sums = [0, 0, 0];
-              cols = [[], [], []];
+              const sums = new Array(COLS).fill(0);
+              cols = Array.from({ length: COLS }, () => []);
               m.sections.map((s, si) => si)
                 .sort((a, b) => (heights[b] || 0) - (heights[a] || 0))
                 .forEach(si => {
@@ -1215,7 +1327,7 @@
                   sums[c] += heights[si] || 0;
                 });
             } else {
-              cols = buildColumns(m.sections).map(col =>
+              cols = buildColumns(m.sections).slice(0, COLS).map(col =>
                 col.map(sec => Object.assign({}, sec, { _si: m.sections.indexOf(sec) })));
             }
             
