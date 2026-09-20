@@ -337,7 +337,7 @@
       z-index: 5;
     }
     
-    /* Main content area: 3 menu columns + branding panel */
+    /* Main content area: 3 equal columns — the third hosts items above the logo */
     .menu-content {
       position: absolute;
       top: 32px;
@@ -345,9 +345,17 @@
       left: 32px;
       right: 32px;
       display: grid;
-      grid-template-columns: 27% 27% 27% 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       column-gap: 20px;
       overflow: hidden;
+    }
+    
+    .col-sections {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     
     .menu-col {
@@ -462,16 +470,17 @@
     
     /* ===== BRANDING PANEL (right column) ===== */
     .brand-panel {
+      flex-shrink: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       min-height: 0;
-      padding: 4px 0;
+      padding-top: 10px;
     }
     
     .brand-logo {
-      width: 190px;
+      width: 200px;
       height: auto;
       display: block;
       flex-shrink: 0;
@@ -672,10 +681,11 @@
           <div class="page-scaler" :style="{ transform: 'scale(' + pageScale + ')' }">
           <div class="menu-page" :id="'menu-page-' + currentMenu">
             <div class="menu-frame"></div>
-            <!-- Main Content: 2 menu columns + branding panel -->
+            <!-- Main Content: 3 columns; the third ends with the logo -->
             <div class="menu-content">
               <!-- Left Column -->
               <div class="menu-col">
+                <div class="col-sections">
                 <template v-for="(section, sIdx) in menus[currentMenu].columns[0]" :key="'c0-'+section._si">
                   <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
                     <div class="menu-section-head">
@@ -692,10 +702,12 @@
                     </div>
                   </div>
                 </template>
+                </div>
               </div>
               
               <!-- Middle Column -->
               <div class="menu-col">
+                <div class="col-sections">
                 <template v-for="(section, sIdx) in menus[currentMenu].columns[1]" :key="'c1-'+section._si">
                   <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
                     <div class="menu-section-head">
@@ -712,10 +724,12 @@
                     </div>
                   </div>
                 </template>
+                </div>
               </div>
               
-              <!-- Right Column -->
+              <!-- Right Column (items above the logo) -->
               <div class="menu-col">
+                <div class="col-sections">
                 <template v-for="(section, sIdx) in menus[currentMenu].columns[2]" :key="'c2-'+section._si">
                   <div class="menu-section" v-if="section.title && section.items.length" :data-menu="currentMenu" :data-sec="section._si">
                     <div class="menu-section-head">
@@ -734,7 +748,7 @@
                 </template>
               </div>
               
-              <!-- Branding panel -->
+              <!-- Branding block at the bottom of the third column -->
               <div class="brand-panel">
                 <img class="brand-logo" src="logo.png" alt="TOTANGO RESTAURANT" />
                 <div class="brand-reserve">
@@ -742,6 +756,7 @@
                   500 FCFA / personne — du lundi au vendredi<br/>
                   <span style="font-size: 9px;">Reservations anniversaires non disponibles le week end</span>
                 </div>
+              </div>
               </div>
             </div>
           </div>
@@ -881,10 +896,13 @@
           window.removeEventListener('resize', updateScale);
         });
         
-        // Helper: build column layout - greedy balanced by item count
-        function buildColumns(sections) {
+        // Helper: build column layout - greedy balanced by item count.
+        // colBias lets a column start with a pre-loaded weight (e.g. the
+        // third column reserves space for the logo block at its bottom).
+        function buildColumns(sections, colBias) {
           const cols = Array.from({ length: COLS }, () => []);
           const colItems = new Array(COLS).fill(0);
+          if (colBias) colBias.forEach((b, i) => { colItems[i] = b; });
           
           // Weight each section by item count + fixed overhead (banner + margins)
           // so columns end up visually even, not just numerically
@@ -1245,6 +1263,9 @@
         // Item-count weighting can't see text wrapping, so we measure the real
         // DOM heights and rebalance columns with actual pixel heights.
         const measuredHeights = ref({});
+        // Height of the logo/reservation block pinned to the bottom of the
+        // third column — the balancer reserves this space in that column.
+        const brandH = ref(0);
         
         async function remeasureSections() {
           await nextTick();
@@ -1253,6 +1274,8 @@
             const h = el.offsetHeight;
             if (h > 0) measuredHeights.value[key] = h;
           });
+          const bp = document.querySelector('.brand-panel');
+          if (bp && bp.offsetHeight > 0) brandH.value = bp.offsetHeight;
         }
         
         // Greedy column balancing using real rendered heights when available,
@@ -1265,6 +1288,9 @@
             let cols;
             if (useMeasured) {
               const sums = new Array(COLS).fill(0);
+              // Third column starts pre-loaded with the logo block height
+              // (+ a gap) so items stack in the space above the logo
+              sums[COLS - 1] = (brandH.value || 380) + 12;
               cols = Array.from({ length: COLS }, () => []);
               m.sections.map((s, si) => si)
                 .sort((a, b) => (heights[b] || 0) - (heights[a] || 0))
@@ -1274,7 +1300,9 @@
                   sums[c] += heights[si] || 0;
                 });
             } else {
-              cols = buildColumns(m.sections).slice(0, COLS).map(col =>
+              // ~20px per item-row: convert logo height into item-weight units
+              const brandWeight = Math.round((brandH.value || 380) / 20);
+              cols = buildColumns(m.sections, [0, 0, brandWeight]).slice(0, COLS).map(col =>
                 col.map(sec => Object.assign({}, sec, { _si: m.sections.indexOf(sec) })));
             }
             
