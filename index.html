@@ -316,11 +316,10 @@
     .menu-page {
       width: 1123px;
       height: 794px;
-      /* Authentic leaf texture from the original design, blended over the logo's
-         exact background color so the embedded logo rectangle is invisible */
-      background: #34383A url("bg-texture.png") repeat;
+      /* The authentic leaf texture from the original design, used exactly as-is.
+         Base color (#293231) comes from the texture itself — no blending. */
+      background: #293231 url("bg-texture.png") repeat;
       background-size: 270px 178px;
-      background-blend-mode: lighten;
       position: relative;
       overflow: hidden;
       border-radius: 18px;
@@ -484,7 +483,6 @@
       height: auto;
       display: block;
       flex-shrink: 0;
-      mix-blend-mode: lighten;
       image-rendering: auto;
     }
     
@@ -750,7 +748,7 @@
               
               <!-- Branding block at the bottom of the third column -->
               <div class="brand-panel">
-                <img class="brand-logo" src="logo.png" alt="TOTANGO RESTAURANT" />
+                <img class="brand-logo" src="logo-transparent.png" alt="TOTANGO RESTAURANT" />
                 <div class="brand-reserve">
                   <span class="res-gold">RÉSERVATION ANNIVERSAIRE</span><br/>
                   500 FCFA / personne — du lundi au vendredi<br/>
